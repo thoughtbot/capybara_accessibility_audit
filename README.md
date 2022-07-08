@@ -62,8 +62,8 @@ end
 
 ## Frequently Asked Questions
 
-* My application already exists, will automated accessibility audits are
-  uncovering violations left and right. Do I have to fix them all at once?
+My application already exists, will automated accessibility audits are uncovering violations left and right. Do I have to fix them all at once?
+---
 
 Your suite has control over which rules are skipped and which rules are
 enforced through the `accessibility_audit_options` configuration.
@@ -114,8 +114,8 @@ end
 As you resolve the violations, you can remove entries from the list of skipped
 rules.
 
-* I've implemented a custom Capybara action to toggle a disclosure element. How
-  can I automatically audit for violations after it's called?
+I've implemented a custom Capybara action to toggle a disclosure element. How can I automatically audit for violations after it's called?
+---
 
 You can add the method to the list of methods that will initiate an automated
 audit:
@@ -130,7 +130,8 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-* How can I turn off auditing for the entire suite?
+How can I turn off auditing for the entire suite?
+---
 
 You can disable automated auditing within your `ApplicationSystemTestCase`:
 
@@ -140,7 +141,22 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
-* How can I turn off auditing for a test file?
+How can I turn off auditing hooks for a method?
+---
+
+You can remove the method from the test's [Set][] of
+`accessibility_audit_after_methods` configuration:
+
+```ruby
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  accessibility_audit_after_methods.delete :visit
+end
+```
+
+[Set]: https://ruby-doc.org/stdlib-3.0.1/libdoc/set/rdoc/Set.html
+
+How can I turn off auditing for a test file?
+---
 
 You can disable automated auditing at the class-level:
 
