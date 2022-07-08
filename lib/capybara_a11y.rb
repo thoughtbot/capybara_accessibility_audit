@@ -1,6 +1,9 @@
-require "capybara_a11y/version"
-require "capybara_a11y/engine"
+require "zeitwerk"
+loader = Zeitwerk::Loader.for_gem
+loader.setup
 
 module CapybaraA11y
   # Your code goes here...
 end
+
+loader.eager_load

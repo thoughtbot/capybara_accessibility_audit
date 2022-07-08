@@ -1,0 +1,26 @@
+<% if @violations.empty? %>
+  <h1>Violations</h1>
+
+  <a href="?rules[]=label">Violate rule: label</a>
+  <a href="?rules[]=image-alt">Violate rule: image-alt</a>
+  <a href="?rules[]=button-name">Violate rule: button-name</a>
+
+  <form>
+    <label for="rules">Rules to violate</label>
+    <input id="rules" name="rules[]">
+
+    <button>Submit</button>
+  </form>
+<% end %>
+
+<% if @violations.label? %>
+  <h1>label</h1>
+
+  <input>
+<% end %>
+
+<% if @violations.image_alt? %>
+  <h1>image-alt</h1>
+
+  <img src="https://example.com">
+<% end %>

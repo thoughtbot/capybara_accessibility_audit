@@ -19,4 +19,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails"
+  spec.add_dependency "capybara"
+  spec.add_dependency "axe-core-capybara"
+  spec.add_dependency "zeitwerk"
 end

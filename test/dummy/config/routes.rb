@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  mount CapybaraA11y::Engine => "/capybara_a11y"
+  resources :violations, only: :index
 end
