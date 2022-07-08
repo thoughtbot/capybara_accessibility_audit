@@ -41,8 +41,8 @@ class AuditAssertionsTest < ApplicationSystemTestCase
   end
 
   test "ignores violations within a matching skip_accessibility_violations block" do
-    skip_accessibility_violations("label")    { visit violations_path(rules: %w[label]) }
-    skip_accessibility_violations(%w[label])  { visit violations_path(rules: %w[label]) }
+    skip_accessibility_violations("label") { visit violations_path(rules: %w[label]) }
+    skip_accessibility_violations(%w[label]) { visit violations_path(rules: %w[label]) }
   end
 
   test "raises violations within a skip_accessibility_violation block that does not apply" do

@@ -26,7 +26,6 @@ module CapybaraA11y
 
           accessibility_audit_after_methods << method
         end
-
       end
     end
 
