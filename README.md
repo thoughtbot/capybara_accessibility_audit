@@ -5,6 +5,28 @@ WCAG Stardards-based accessibility violations.
 
 ## Usage
 
+```
+Failure:
+Found 1 accessibility violation:
+
+1) label: Form elements must have labels (critical)
+    https://dequeuniversity.com/rules/axe/4.4/label?application=axeAPI
+    The following 1 node violate this rule:
+
+        Selector: input
+        HTML: <input>
+        Fix any of the following:
+        - Form element does not have an implicit (wrapped) <label>
+        - Form element does not have an explicit <label>
+        - aria-label attribute does not exist or is empty
+        - aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty
+        - Element has no title attribute
+        - Element has no placeholder attribute
+        - Element's default semantics were not overridden with role="none" or role="presentation"
+
+Invocation: axe.run({:exclude=>[]}, {}, callback);
+```
+
 Installing the gem will automatically configure your System Tests to audit for
 accessibility violations after common actions, including:
 
@@ -19,11 +41,11 @@ to audit for accessibility violations. To configure which options are passed to
 the `be_axe_clean` matcher, override the class-level
 `accessibility_audit_options`. Supported keys include:
 
-* [`according_to`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#according_to---accessibility-standard-tag-clause)
-* [`checking_only`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#checking_only---exclusive-rules-clause)
-* [`checking`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#checking---checking-rules-clause)
+* [`according_to:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#according_to---accessibility-standard-tag-clause)
+* [`checking_only:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#checking_only---exclusive-rules-clause)
+* [`checking:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#checking---checking-rules-clause)
 * [`excluding:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#excluding---exclusion-clause)
-* [`skipping`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#skipping---skipping-rules-clause)
+* [`skipping:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#skipping---skipping-rules-clause)
 * [`within:`](https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#within---inclusion-clause)
 
 To override the class-level setting, wrap code in calls to the
