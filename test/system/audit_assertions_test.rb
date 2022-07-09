@@ -117,3 +117,17 @@ class SkippingAuditAssertionsTest < ApplicationSystemTestCase
     end
   end
 end
+
+class SkippingAuditAfterMethodTest < ApplicationSystemTestCase
+  skip_accessibility_audit_after :visit, :click_on
+
+  test "does not audit after a skipped method" do
+    visit violations_path
+    click_on "Violate rule: label"
+    go_back
+
+    assert_rule_violation("label: Form elements must have labels") do
+      click_link "Violate rule: label"
+    end
+  end
+end
