@@ -1,18 +1,18 @@
-require_relative "lib/capybara_a11y/version"
+require_relative "lib/capybara_accessibility_audit/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "capybara_a11y"
-  spec.version = CapybaraA11y::VERSION
+  spec.name = "capybara_accessibility_audit"
+  spec.version = CapybaraAccessibilityAudit::VERSION
   spec.authors = ["Sean Doyle"]
   spec.email = ["sean.p.doyle24@gmail.com"]
-  spec.homepage = "https://github.com/thoughtbot/capybara_a11y"
+  spec.homepage = "https://github.com/thoughtbot/capybara_accessibility_audit"
   spec.summary = "Accessibility tooling for Capybara"
   spec.description = "Accessibility tooling for Capybara"
   spec.license = "MIT"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/thoughtbot/capybara_a11y"
-  spec.metadata["changelog_uri"] = "https://github.com/thoughtbot/capybara_a11y/blob/main/CHANGELOG.md"
+  spec.metadata["source_code_uri"] = "https://github.com/thoughtbot/capybara_accessibility_audit"
+  spec.metadata["changelog_uri"] = "https://github.com/thoughtbot/capybara_accessibility_audit/blob/main/CHANGELOG.md"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

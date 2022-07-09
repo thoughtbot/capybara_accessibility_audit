@@ -1,7 +1,7 @@
 require "axe-capybara"
 require "axe/matchers/be_axe_clean"
 
-module CapybaraA11y
+module CapybaraAccessibilityAudit
   module AuditSystemTestExtensions
     extend ActiveSupport::Concern
 
