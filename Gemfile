@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-# Specify your gem's dependencies in capybara_a11y.gemspec.
+# Specify your gem's dependencies in capybara_accessibility_audit.gemspec.
 gemspec
 
 # Start debugger with binding.b [https://github.com/ruby/debug]

@@ -1,4 +1,4 @@
-# Contributing to `capybara_a11y`
+# Contributing to `capybara_accessibility_audit`
 
 We love pull requests from everyone. By participating in this project, you
 agree to abide by the thoughtbot [code of conduct][].
@@ -17,7 +17,7 @@ Here are some ways *you* can contribute:
 * by closing [issues][]
 * by reviewing patches
 
-[issues]: https://github.com/thoughtbot/capybara_a11y/issues
+[issues]: https://github.com/thoughtbot/capybara_accessibility_audit/issues
 
 ## Submitting an Issue
 
@@ -106,7 +106,7 @@ Use [standard] to automatically format your code:
 bin/rails standard:fix
 ```
 
-[repo]: https://github.com/thoughtbot/capybara_a11y/tree/main
+[repo]: https://github.com/thoughtbot/capybara_accessibility_audit/tree/main
 [fork]: https://help.github.com/articles/fork-a-repo/
 [branch]: https://help.github.com/articles/creating-and-deleting-branches-within-your-repository/
 [pr]: https://help.github.com/articles/using-pull-requests/

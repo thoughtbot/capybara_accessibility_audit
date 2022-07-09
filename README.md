@@ -1,4 +1,4 @@
-# CapybaraA11y
+# CapybaraAccessibilityAudit
 
 Extend your Capybara-powered System Tests to automatically audit the page for
 WCAG Stardards-based accessibility violations.
@@ -36,7 +36,7 @@ accessibility violations after common actions, including:
 * [`click_link_or_button`](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Node/Actions#click_link_or_button-instance_method)
 * [`click_on`](https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Node/Actions:click_on)
 
-Under the hood, `capybara_a11y` relies on [axe-core-rspec][], which uses [aXe][]
+Under the hood, `capybara_accessibility_audit` relies on [axe-core-rspec][], which uses [aXe][]
 to audit for accessibility violations. To configure which options are passed to
 the `be_axe_clean` matcher, override the class-level
 `accessibility_audit_options`. Supported keys include:
@@ -187,7 +187,7 @@ end
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "capybara_a11y"
+gem "capybara_accessibility_audit"
 ```
 
 And then execute:
@@ -197,7 +197,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install capybara_a11y
+$ gem install capybara_accessibility_audit
 ```
 
 ## Contributing

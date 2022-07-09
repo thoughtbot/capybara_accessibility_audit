@@ -1,4 +1,4 @@
 # desc "Explaining what the task does"
-# task :capybara_a11y do
+# task :capybara_accessibility_audit do
 #   # Task goes here
 # end
