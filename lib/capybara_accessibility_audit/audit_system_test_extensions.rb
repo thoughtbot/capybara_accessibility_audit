@@ -16,16 +16,21 @@ module CapybaraAccessibilityAudit
         super
 
         descendant.accessibility_audit_options = accessibility_audit_options.deep_dup
+        descendant.accessibility_audit_after_methods = accessibility_audit_after_methods.dup
       end
 
       def accessibility_audit_after(*methods)
         (methods.flatten.to_set - accessibility_audit_after_methods).each do |method|
           define_method method do |*arguments, **options, &block|
-            super(*arguments, **options, &block).tap { audit! method }
+            super(*arguments, **options, &block).tap { Auditor.new(self).audit!(method) }
           end
 
           accessibility_audit_after_methods << method
         end
+      end
+
+      def skip_accessibility_audit_after(*methods)
+        methods.each { |method| accessibility_audit_after_methods.delete(method) }
       end
     end
 
@@ -84,14 +89,6 @@ module CapybaraAccessibilityAudit
       axe_matcher = options.inject(axe_matcher) { |matcher, option| matcher.public_send(*option) }
 
       assert axe_matcher.matches?(page), axe_matcher.failure_message
-    end
-
-    private
-
-    def audit!(method)
-      if accessibility_audit_enabled && method.in?(accessibility_audit_after_methods)
-        assert_no_accessibility_violations(**accessibility_audit_options)
-      end
     end
   end
 end

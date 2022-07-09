@@ -145,11 +145,12 @@ How can I turn off auditing hooks for a method?
 ---
 
 You can remove the method from the test's [Set][] of
-`accessibility_audit_after_methods` configuration:
+`accessibility_audit_after_methods` configuration by calling
+`skip_accessibility_audit_after`:
 
 ```ruby
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  accessibility_audit_after_methods.delete :visit
+  skip_accessibility_audit_after :visit
 end
 ```
 
