@@ -131,3 +131,12 @@ class SkippingAuditAfterMethodTest < ApplicationSystemTestCase
     end
   end
 end
+
+class SkippingRackTestDriversTest < ApplicationSystemTestCase
+  driven_by :rack_test
+
+  test "ignores violations" do
+    visit violations_path
+    click_on "Violate rule: label"
+  end
+end

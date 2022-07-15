@@ -16,6 +16,7 @@ else
 end
 
 gem "rails", rails_constraint
+gem "rspec-rails"
 
 gem "puma"
 gem "standard", "~> 1.12"

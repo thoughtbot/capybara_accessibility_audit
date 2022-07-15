@@ -33,3 +33,5 @@ jobs:
 
       - run: bin/rails standard
       - run: bin/rails test:all
+      - run: bundle exec rspec
+      - run: RSPEC_TYPE=feature bundle exec rspec

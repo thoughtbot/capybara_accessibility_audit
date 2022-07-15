@@ -34,6 +34,8 @@ module CapybaraAccessibilityAudit
       end
     end
 
+    delegate :accessibility_audit_after, :skip_accessibility_audit_after, to: :class
+
     def with_accessibility_audits(**options, &block)
       accessibility_audit_enabled = self.accessibility_audit_enabled
       self.accessibility_audit_enabled = true
