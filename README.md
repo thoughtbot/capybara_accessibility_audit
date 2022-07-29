@@ -1,7 +1,5 @@
 # CapybaraAccessibilityAudit
 
-:warning: This is pre-release software. :warning:
-
 Extend your Capybara-powered System Tests to automatically audit the page for
 WCAG Stardards-based accessibility violations.
 
@@ -210,9 +208,7 @@ end
 Add this line to your application's Gemfile:
 
 ```ruby
-gem "capybara_accessibility_audit",
-  github: "thoughtbot/capybara_accessibility_audit",
-  branch: "main"
+gem "capybara_accessibility_audit"
 ```
 
 And then execute:
