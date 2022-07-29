@@ -57,6 +57,12 @@ RSpec.describe "Audit assertions", type: ENV.fetch("RSPEC_TYPE", "system") do
     end
   end
 
+  it "ignores violations when wrapped in skip_accessibility_audits" do
+    skip_accessibility_audits do
+      visit violations_path(rules: %w[label])
+    end
+  end
+
   describe "Disabling" do
     before do
       self.accessibility_audit_enabled = false
