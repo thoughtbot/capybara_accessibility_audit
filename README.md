@@ -141,6 +141,26 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
+How can I turn off auditing for a block of code?
+---
+
+You can disable automated auditing temporarily by wrapping code in a
+`skip_accessibility_audits` block:
+
+```ruby
+class MySystemTest < ApplicationSystemTestCase
+  test "with overridden accessibility audit options" do
+    skip_accessibility_audits do
+      visit a_page_with_violations_path
+
+      click_on "A link to a page with a violation"
+    end
+
+    # ...
+  end
+end
+```
+
 How can I turn off auditing hooks for a method?
 ---
 
