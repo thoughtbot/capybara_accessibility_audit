@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Support Capybara's modal block helpers like [accept_alert][]
+
+  *Sean Doyle*
+
+[accept_alert]: https://rubydoc.info/github/teamcapybara/capybara/master/Capybara/Session:accept_alert
+
 ## 0.1.0
 
 - Initial release

@@ -11,6 +11,10 @@
 
     <button>Submit</button>
   </form>
+
+  <button type="button" onclick="alert('<%= params.fetch(:alert, "Alert!") %>')">Open alert</button>
+  <button type="button" onclick="confirm('<%= params.fetch(:confirm, "Confirm?") %>')">Open confirm</button>
+  <button type="button" onclick="prompt('<%= params.fetch(:prompt, "Hello?") %>')">Open prompt</button>
 <% end %>
 
 <% if @violations.label? %>

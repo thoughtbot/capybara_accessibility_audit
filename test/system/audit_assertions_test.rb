@@ -58,6 +58,26 @@ class AuditAssertionsTest < ApplicationSystemTestCase
       end
     end
   end
+
+  test "gracefully handles accept_alert blocks" do
+    visit violations_path(alert: "Alert!")
+
+    accept_alert("Alert!") { click_button "Open alert" }
+  end
+
+  test "gracefully handles confirm blocks" do
+    visit violations_path(confirm: "Confirm?")
+
+    accept_confirm("Confirm?") { click_button "Open confirm" }
+    dismiss_confirm("Confirm?") { click_button "Open confirm" }
+  end
+
+  test "gracefully handles prompt blocks" do
+    visit violations_path(prompt: "Hello?")
+
+    accept_prompt("Hello?") { click_button "Open prompt" }
+    dismiss_prompt("Hello?") { click_button "Open prompt" }
+  end
 end
 
 class DisablingAuditAssertionsTest < ApplicationSystemTestCase
