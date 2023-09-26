@@ -5,10 +5,24 @@ module CapybaraAccessibilityAudit
   module AuditSystemTestExtensions
     extend ActiveSupport::Concern
 
+    MODAL_METHODS =
+      if defined?(Capybara::Session::MODAL_METHODS)
+        Capybara::Session::MODAL_METHODS
+      else
+        %i[accept_alert accept_confirm accept_prompt dismiss_confirm dismiss_prompt]
+      end
+
     included do
       class_attribute :accessibility_audit_after_methods, default: Set.new
       class_attribute :accessibility_audit_enabled, default: true
       class_attribute :accessibility_audit_options, default: ActiveSupport::OrderedOptions.new
+
+      MODAL_METHODS.each do |method|
+        define_method method do |*arguments, **options, &block|
+          result = super(*arguments, **options) { skip_accessibility_audits(&block) }
+          result.tap { Auditor.new(self).audit!(method) }
+        end
+      end
     end
 
     class_methods do
