@@ -9,6 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary = "Accessibility tooling for Capybara"
   spec.description = "Accessibility tooling for Capybara"
   spec.license = "MIT"
+  spec.required_ruby_version = ">= 2.7"
 
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/thoughtbot/capybara_accessibility_audit"
@@ -18,7 +19,7 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails"
+  spec.add_dependency "rails", ">= 6.1"
   spec.add_dependency "capybara"
   spec.add_dependency "axe-core-capybara"
   spec.add_dependency "zeitwerk"
