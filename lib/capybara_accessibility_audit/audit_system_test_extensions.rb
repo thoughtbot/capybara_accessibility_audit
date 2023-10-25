@@ -90,7 +90,7 @@ module CapybaraAccessibilityAudit
       accessibility_audit_options.skipping = skipping
     end
 
-    def assert_no_accessibility_violations(**options)
+    def assert_no_accessibility_violations(**options, &block)
       options.assert_valid_keys(
         :according_to,
         :checking,
@@ -103,6 +103,8 @@ module CapybaraAccessibilityAudit
 
       axe_matcher = Axe::Matchers::BeAxeClean.new
       axe_matcher = options.inject(axe_matcher) { |matcher, option| matcher.public_send(*option) }
+
+      yield if block
 
       assert axe_matcher.matches?(page), axe_matcher.failure_message
     end

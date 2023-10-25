@@ -124,6 +124,12 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
       assert_no_accessibility_violations checking: "label", skipping: "image-alt"
     end
   end
+
+  test "assert_no_accessibility_violations takes block" do
+    assert_no_accessibility_violations do
+      visit violations_path
+    end
+  end
 end
 
 class SkippingAuditAssertionsTest < ApplicationSystemTestCase

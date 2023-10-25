@@ -204,6 +204,21 @@ class MySystemTest < ApplicationSystemTestCase
 end
 ```
 
+How can I simply assert that a page raises no violations?
+---
+
+There may be cases where you wish to assert that a page raises no violations.
+
+```ruby
+class MySystemTest < ApplicationSystemTestCase
+  test "Page raises no accessibility violations" do
+    assert_no_accessibility_violations do
+      visit root_path
+    end
+  end
+end
+```
+
 ## Installation
 Add this line to your application's Gemfile:
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Allow `assert_no_accessibility_violations` to accept a `block`
+
+  *Steve Polito*
+
 ## 0.1.1 (September 26, 2023)
 
 - Support Capybara's modal block helpers like [accept_alert][]
