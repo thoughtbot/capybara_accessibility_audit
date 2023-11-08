@@ -62,7 +62,7 @@ end
 
 ## Frequently Asked Questions
 
-My application already exists, will automated accessibility audits are uncovering violations left and right. Do I have to fix them all at once?
+My application already exists, automated accessibility audits are uncovering violations left and right. Do I have to fix them all at once?
 ---
 
 Your suite has control over which rules are skipped and which rules are
