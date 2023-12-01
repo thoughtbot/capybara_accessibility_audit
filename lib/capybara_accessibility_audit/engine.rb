@@ -10,27 +10,33 @@ module CapybaraAccessibilityAudit
     ]
     config.capybara_accessibility_audit.audit_enabled = true
 
-    ActiveSupport.on_load :action_dispatch_system_test_case do
-      include CapybaraAccessibilityAudit::AuditSystemTestExtensions
+    initializer "capybara_accessibility_audit.minitest" do |app|
+      ActiveSupport.on_load :action_dispatch_system_test_case do
+        include CapybaraAccessibilityAudit::AuditSystemTestExtensions
 
-      self.accessibility_audit_enabled = Rails.configuration.capybara_accessibility_audit.audit_enabled
+        self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
-      accessibility_audit_after Rails.configuration.capybara_accessibility_audit.audit_after
+        accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
+      end
     end
 
-    if defined?(RSpec)
-      RSpec.configure do |config|
-        config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :system
-        config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :feature
+    initializer "capybara_accessibility_audit.rspec" do |app|
+      if defined?(RSpec)
+        require "rspec/core"
 
-        configure = proc do
-          self.accessibility_audit_enabled = Rails.configuration.capybara_accessibility_audit.audit_enabled
+        RSpec.configure do |config|
+          config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :system
+          config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :feature
 
-          accessibility_audit_after Rails.configuration.capybara_accessibility_audit.audit_after
+          configure = proc do
+            self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
+
+            accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
+          end
+
+          config.before(type: :system, &configure)
+          config.before(type: :feature, &configure)
         end
-
-        config.before(type: :system, &configure)
-        config.before(type: :feature, &configure)
       end
     end
   end
