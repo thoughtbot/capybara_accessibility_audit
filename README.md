@@ -1,7 +1,7 @@
 # CapybaraAccessibilityAudit
 
 Extend your Capybara-powered System Tests to automatically audit the page for
-WCAG Stardards-based accessibility violations.
+[WCAG Standards-based accessibility violations](https://www.w3.org/WAI/standards-guidelines/wcag/).
 
 ## Usage
 
