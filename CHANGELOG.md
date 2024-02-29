@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Remove unused `require "axe-capybara"` statement
+
+  *Sean Doyle*
+
 - Drop support for [End of Life version 2.7](https://www.ruby-lang.org/en/downloads/branches/)
 
   *Sean Doyle*

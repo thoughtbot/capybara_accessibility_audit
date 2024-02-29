@@ -1,4 +1,3 @@
-require "axe-capybara"
 require "axe/matchers/be_axe_clean"
 
 module CapybaraAccessibilityAudit
