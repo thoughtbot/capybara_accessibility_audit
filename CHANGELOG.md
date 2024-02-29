@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop support for [End of Life version 2.7](https://www.ruby-lang.org/en/downloads/branches/)
+
+  *Sean Doyle*
+
 ## 0.1.1 (September 26, 2023)
 
 - Support Capybara's modal block helpers like [accept_alert][]
