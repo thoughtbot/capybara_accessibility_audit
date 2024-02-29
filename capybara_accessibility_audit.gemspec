@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.1"
   spec.add_dependency "capybara"
-  spec.add_dependency "axe-core-capybara"
+  spec.add_dependency "axe-core-api"
   spec.add_dependency "zeitwerk"
 end
