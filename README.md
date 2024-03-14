@@ -222,3 +222,6 @@ Please read [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+<!-- START /templates/footer.md -->
+<!-- END /templates/footer.md -->
