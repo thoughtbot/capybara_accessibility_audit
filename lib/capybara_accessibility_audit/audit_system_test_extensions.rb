@@ -14,6 +14,7 @@ module CapybaraAccessibilityAudit
     included do
       class_attribute :accessibility_audit_after_methods, default: Set.new
       class_attribute :accessibility_audit_enabled, default: true
+      class_attribute :accessibility_audit_skip_on_error, default: false
       class_attribute :accessibility_audit_options, default: ActiveSupport::OrderedOptions.new
 
       MODAL_METHODS.each do |method|
@@ -51,6 +52,7 @@ module CapybaraAccessibilityAudit
 
     def with_accessibility_audits(**options, &block)
       accessibility_audit_enabled = self.accessibility_audit_enabled
+      accessibility_audit_skip_on_error = self.accessibility_audit_skip_on_error
       self.accessibility_audit_enabled = true
 
       if options.present?
@@ -103,7 +105,12 @@ module CapybaraAccessibilityAudit
       axe_matcher = Axe::Matchers::BeAxeClean.new
       axe_matcher = options.inject(axe_matcher) { |matcher, option| matcher.public_send(*option) }
 
-      assert axe_matcher.matches?(page), axe_matcher.failure_message
+      page_axe_match = axe_matcher.matches?(page)
+      if !page_axe_match && self.accessibility_audit_skip_on_error
+        skip(axe_matcher.failure_message)
+      else
+        assert page_axe_match, axe_matcher.failure_message
+      end
     end
   end
 end
