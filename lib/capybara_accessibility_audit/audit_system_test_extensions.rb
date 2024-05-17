@@ -22,6 +22,16 @@ module CapybaraAccessibilityAudit
           result.tap { Auditor.new(self).audit!(method) }
         end
       end
+
+      attr_accessor :accessibility_violations
+
+      setup do
+        @accessibility_violations = []
+      end
+
+      teardown do
+        report_accessibility_violations(@accessibility_violations)
+      end
     end
 
     class_methods do
@@ -89,7 +99,7 @@ module CapybaraAccessibilityAudit
       accessibility_audit_options.skipping = skipping
     end
 
-    def assert_no_accessibility_violations(**options)
+    def audit_accessibility_violations(**options)
       options.assert_valid_keys(
         :according_to,
         :checking,
@@ -102,6 +112,17 @@ module CapybaraAccessibilityAudit
 
       axe_matcher = Axe::Matchers::BeAxeClean.new
       axe_matcher = options.inject(axe_matcher) { |matcher, option| matcher.public_send(*option) }
+      axe_matcher
+    end
+
+    def report_accessibility_violations(violations)
+      if (first_violation = violations.first)
+        flunk first_violation.failure_messages(0)
+      end
+    end
+
+    def assert_no_accessibility_violations(**options)
+      axe_matcher = audit_accessibility_violations(**options)
 
       assert axe_matcher.matches?(page), axe_matcher.failure_message
     end

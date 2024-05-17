@@ -114,6 +114,34 @@ end
 As you resolve the violations, you can remove entries from the list of skipped
 rules.
 
+I don't want accessibility violations to prevent the test suite from completing. How can I control how violations are reported?
+---
+
+Violations contain:
+
+✅ AXE violation rule output
+❌ test line number that triggered the audit
+❌ application URL when audited -> `current_url`
+❌ captured screenshot and path to image file (`save_and_open_screenshot` -> cut out the "save" part)
+❌ page HTML when audited
+
+```ruby
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  # self.violations += audit.results.violations
+
+  teardown { report_accessibility_violations(self.violations) }
+
+  def report_accessibility_violations(violations)
+    assert_empty violations, violations.first.failure_message
+  end
+
+  # override
+  def report_accessibility_violations(violations)
+    Rails.root.join("tmp/accessibility_violations.json").write(violations.to_json)
+  end
+end
+```
+
 I've implemented a custom Capybara action to toggle a disclosure element. How can I automatically audit for violations after it's called?
 ---
 

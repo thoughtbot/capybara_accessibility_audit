@@ -126,6 +126,22 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
   end
 end
 
+class ReportingAuditViolationsTest < ApplicationSystemTestCase
+  test "accumulates violations without failing fast" do
+    visit violations_path
+    click_link "Violate rule: label"
+    go_back
+    click_link "Violate rule: image-alt"
+  end
+
+  def report_accessibility_violations(violations)
+    violation_names = violations.map { |violation| violation.id.to_s }
+
+    assert_includes violation_names, "label"
+    assert_includes violation_names, "image-alt"
+  end
+end
+
 class SkippingAuditAssertionsTest < ApplicationSystemTestCase
   accessibility_audit_options.skipping = %w[label]
 
