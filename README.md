@@ -141,6 +141,17 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
+How can I make all of the failing tests just be pending instead of failures?
+---
+
+You can allow automated auditing, but mark tests that fail the auditing be marked as `pending` instead of `failed`:
+
+```ruby
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  self.accessibility_audit_skip_on_error = true
+end
+```
+
 How can I turn off auditing for a block of code?
 ---
 
