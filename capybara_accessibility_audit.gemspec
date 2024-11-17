@@ -23,4 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "capybara"
   spec.add_dependency "axe-core-api"
   spec.add_dependency "zeitwerk"
+
+  spec.add_dependency "bigdecimal"
+  spec.add_dependency "drb"
+  spec.add_dependency "mutex_m"
 end

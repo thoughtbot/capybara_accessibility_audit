@@ -53,7 +53,7 @@ class AuditAssertionsTest < ApplicationSystemTestCase
 
   test "raises violations within a skip_accessibility_violation block that does not apply" do
     skip_accessibility_violations "label" do
-      assert_rule_violation "image-alt: Images must have alternate text" do
+      assert_rule_violation "image-alt: Images must have alternative text" do
         visit violations_path(rules: %w[image-alt])
       end
     end
@@ -108,7 +108,7 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
     go_back
 
     with_accessibility_audits do
-      assert_rule_violation "image-alt: Images must have alternate text" do
+      assert_rule_violation "image-alt: Images must have alternative text" do
         click_on "Violate rule: image-alt"
       end
     end
@@ -119,7 +119,7 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
 
     assert_rule_violation(
       with: "label: Form elements must have labels",
-      without: "image-alt: Images must have alternate text"
+      without: "image-alt: Images must have alternative text"
     ) do
       assert_no_accessibility_violations checking: "label", skipping: "image-alt"
     end
