@@ -63,6 +63,20 @@ RSpec.describe "Audit assertions", type: ENV.fetch("RSPEC_TYPE", "system") do
     end
   end
 
+  describe "Make failing tests Pending" do
+    before do
+      self.accessibility_audit_skip_on_error = true
+    end
+
+    it "marks violation test as pending" do
+      allow_any_instance_of(RSpec::Core::Pending).to receive(:skip)
+      visit violations_path
+      click_on "Violate rule: label"
+      go_back
+      click_on "Violate rule: image-alt"
+    end
+  end
+
   describe "Disabling" do
     before do
       self.accessibility_audit_enabled = false
