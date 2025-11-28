@@ -60,7 +60,7 @@ module CapybaraAccessibilityAudit
 
         File.write(file_path, JSON.pretty_generate(summary_data))
 
-        puts "Accessibility audit report written to: #{file_path}"
+        puts "\n======> Accessibility audit report written to: #{file_path}"
       end
 
       def report!
