@@ -8,12 +8,14 @@ module CapybaraAccessibilityAudit
       click_link_or_button
       click_on
     ]
+    # audit_enabled accepts: false (disabled), true (assert mode), :assert, :stdout, or { file: 'path' }
     config.capybara_accessibility_audit.audit_enabled = true
 
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
         include CapybaraAccessibilityAudit::AuditSystemTestExtensions
 
+        # Use the backwards-compatible accessor which handles conversion
         self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
         accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
@@ -29,6 +31,7 @@ module CapybaraAccessibilityAudit
           config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :feature
 
           configure = proc do
+            # Use the backwards-compatible accessor which handles conversion
             self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
@@ -36,6 +39,20 @@ module CapybaraAccessibilityAudit
 
           config.before(type: :system, &configure)
           config.before(type: :feature, &configure)
+
+          # Output report at the end of the test suite if violations were collected
+          config.after(:suite) do
+            Reporter.report! if Reporter.violations.any?
+          end
+        end
+      end
+    end
+
+    # Hook for Minitest to output report at end of test run
+    config.after_initialize do
+      if defined?(Minitest)
+        Minitest.after_run do
+          Reporter.report! if Reporter.violations.any?
         end
       end
     end

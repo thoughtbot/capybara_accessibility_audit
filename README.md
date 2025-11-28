@@ -130,6 +130,34 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
 end
 ```
 
+How can I report violations without failing my tests?
+---
+
+You can configure the gem to collect and report violations without failing tests
+by setting `accessibility_audit_enabled` to `:stdout` or `{ file: 'path' }`:
+
+**Report to stdout:**
+
+```ruby
+# config/environments/test.rb
+config.capybara_accessibility_audit.audit_enabled = :stdout
+```
+
+**Report to JSON file:**
+
+```ruby
+# config/environments/test.rb
+config.capybara_accessibility_audit.audit_enabled = { file: 'tmp/accessibility_violations.json' }
+```
+
+The JSON report includes structured violation data with severity levels, WCAG tags,
+affected elements, and remediation guidance. Violations are collected throughout
+the test run and output at the end with a summary grouped by page and by rule.
+
+This is useful when introducing accessibility auditing to an existing application
+with many violations - you can run your suite without failures to get a complete
+report of all issues to address.
+
 How can I turn off auditing for the entire suite?
 ---
 
