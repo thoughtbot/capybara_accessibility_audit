@@ -3,8 +3,8 @@ require_relative "lib/capybara_accessibility_audit/version"
 Gem::Specification.new do |spec|
   spec.name = "capybara_accessibility_audit"
   spec.version = CapybaraAccessibilityAudit::VERSION
-  spec.authors = ["Sean Doyle"]
-  spec.email = ["sean.p.doyle24@gmail.com"]
+  spec.authors = ["Sean Doyle", "Daniel Gasienica"]
+  spec.email = ["sean.p.doyle24@gmail.com", "daniel@gasienica.ch"]
   spec.homepage = "https://github.com/thoughtbot/capybara_accessibility_audit"
   spec.summary = "Accessibility tooling for Capybara"
   spec.description = "Accessibility tooling for Capybara"
