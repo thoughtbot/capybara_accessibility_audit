@@ -108,7 +108,7 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: total_violation_count,
           num_pages_with_violations: violations.count,
-          violations_by_impact: violations_by_impact,
+          num_violations_by_impact: num_violations_by_impact,
           generated_at: Time.now.iso8601
         },
         violations_by_rule: group_violations_by_rule,
@@ -116,7 +116,7 @@ module CapybaraAccessibilityAudit
       }
     end
 
-    private_class_method def self.violations_by_impact
+    private_class_method def self.num_violations_by_impact
       impact_counts = Hash.new(0)
 
       violations.each do |page_data|

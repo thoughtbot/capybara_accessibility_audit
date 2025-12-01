@@ -30,7 +30,7 @@ namespace :capybara_accessibility_audit do
       puts "  Total violations: #{merged[:summary][:total_violations]}"
       puts "  Pages with violations: #{merged[:summary][:num_pages_with_violations]}"
       puts "  Violations by impact:"
-      merged[:summary][:violations_by_impact].each do |impact, count|
+      merged[:summary][:num_violations_by_impact].each do |impact, count|
         puts "    #{impact}: #{count}"
       end
     rescue => e

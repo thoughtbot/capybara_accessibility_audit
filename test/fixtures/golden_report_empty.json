@@ -2,7 +2,7 @@
   "summary": {
     "total_violations": 0,
     "num_pages_with_violations": 0,
-    "violations_by_impact": {
+    "num_violations_by_impact": {
       "critical": 0,
       "serious": 0,
       "moderate": 0,

@@ -70,7 +70,7 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: 0,
           num_pages_with_violations: 0,
-          violations_by_impact: IMPACT_PRIORITY.keys.sort_by { |k| -IMPACT_PRIORITY[k] }.each_with_object({}) { |k, h| h[k] = 0 },
+          num_violations_by_impact: IMPACT_PRIORITY.keys.sort_by { |k| -IMPACT_PRIORITY[k] }.each_with_object({}) { |k, h| h[k] = 0 },
           generated_at: Time.now.iso8601
         },
         violations_by_rule: {},
@@ -159,7 +159,7 @@ module CapybaraAccessibilityAudit
       {
         total_violations: calculate_total_violations(violations_by_page),
         num_pages_with_violations: count_pages_with_violations(violations_by_page),
-        violations_by_impact: calculate_violations_by_impact(violations_by_page),
+        num_violations_by_impact: calculate_violations_by_impact(violations_by_page),
         generated_at: latest_timestamp(reports)
       }
     end

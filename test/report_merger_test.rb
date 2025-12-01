@@ -111,10 +111,10 @@ module CapybaraAccessibilityAudit
       merged = ReportMerger.merge_data([report1, report2])
 
       assert_equal 7, merged[:summary][:total_violations]
-      assert_equal 3, merged[:summary][:violations_by_impact]["critical"]
-      assert_equal 1, merged[:summary][:violations_by_impact]["serious"]
-      assert_equal 3, merged[:summary][:violations_by_impact]["moderate"]
-      assert_equal 0, merged[:summary][:violations_by_impact]["minor"]
+      assert_equal 3, merged[:summary][:num_violations_by_impact]["critical"]
+      assert_equal 1, merged[:summary][:num_violations_by_impact]["serious"]
+      assert_equal 3, merged[:summary][:num_violations_by_impact]["moderate"]
+      assert_equal 0, merged[:summary][:num_violations_by_impact]["minor"]
     end
 
     test "handles empty report list" do
@@ -228,7 +228,7 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: calculate_total(pages),
           num_pages_with_violations: pages.count { |p| p[:violations].any? },
-          violations_by_impact: calculate_impacts(pages),
+          num_violations_by_impact: calculate_impacts(pages),
           generated_at: generated_at
         },
         violations_by_rule: violations_by_rule,
@@ -241,7 +241,7 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: num_occurrences,
           num_pages_with_violations: pages.count,
-          violations_by_impact: {"critical" => num_occurrences, "serious" => 0, "moderate" => 0, "minor" => 0},
+          num_violations_by_impact: {"critical" => num_occurrences, "serious" => 0, "moderate" => 0, "minor" => 0},
           generated_at: "2024-01-01T10:00:00Z"
         },
         violations_by_rule: {
@@ -331,7 +331,7 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: 0,
           num_pages_with_violations: 0,
-          violations_by_impact: {"critical" => 0, "serious" => 0, "moderate" => 0, "minor" => 0},
+          num_violations_by_impact: {"critical" => 0, "serious" => 0, "moderate" => 0, "minor" => 0},
           generated_at: "2024-01-01T10:00:00Z"
         },
         violations_by_rule: {},
