@@ -11,6 +11,7 @@ module CapybaraAccessibilityAudit
     # audit_enabled accepts: false (disabled), true (assert mode), :assert, :stdout, or { file: 'path' }
     config.capybara_accessibility_audit.audit_enabled = true
 
+    # Minitest
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
         include CapybaraAccessibilityAudit::AuditSystemTestExtensions
@@ -22,6 +23,7 @@ module CapybaraAccessibilityAudit
       end
     end
 
+    # RSpec
     initializer "capybara_accessibility_audit.rspec" do |app|
       if defined?(RSpec)
         require "rspec/core"
@@ -48,7 +50,7 @@ module CapybaraAccessibilityAudit
       end
     end
 
-    # Hook for Minitest to output report at end of test run
+    # Minitest
     config.after_initialize do
       if defined?(Minitest)
         Minitest.after_run do
