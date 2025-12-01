@@ -231,8 +231,8 @@ module CapybaraAccessibilityAudit
           violations_by_impact: calculate_impacts(pages),
           generated_at: generated_at
         },
-        violations_by_page: pages,
-        violations_by_rule: violations_by_rule
+        violations_by_rule: violations_by_rule,
+        violations_by_page: pages
       }
     end
 
@@ -244,7 +244,6 @@ module CapybaraAccessibilityAudit
           violations_by_impact: {"critical" => num_occurrences, "serious" => 0, "moderate" => 0, "minor" => 0},
           generated_at: "2024-01-01T10:00:00Z"
         },
-        violations_by_page: [],
         violations_by_rule: {
           rule_id => create_rule_data(
             id: rule_id,
@@ -252,7 +251,8 @@ module CapybaraAccessibilityAudit
             num_occurrences: num_occurrences,
             pages: pages
           )
-        }
+        },
+        violations_by_page: []
       }
     end
 
@@ -334,8 +334,8 @@ module CapybaraAccessibilityAudit
           violations_by_impact: {"critical" => 0, "serious" => 0, "moderate" => 0, "minor" => 0},
           generated_at: "2024-01-01T10:00:00Z"
         },
-        violations_by_page: [],
-        violations_by_rule: {}
+        violations_by_rule: {},
+        violations_by_page: []
       }
     end
 

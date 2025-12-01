@@ -34,8 +34,8 @@ module CapybaraAccessibilityAudit
 
       {
         summary: calculate_summary(violations_by_page, reports),
-        violations_by_page: violations_by_page,
-        violations_by_rule: violations_by_rule
+        violations_by_rule: violations_by_rule,
+        violations_by_page: violations_by_page
       }
     end
 
@@ -73,8 +73,8 @@ module CapybaraAccessibilityAudit
           violations_by_impact: IMPACT_PRIORITY.keys.sort_by { |k| -IMPACT_PRIORITY[k] }.each_with_object({}) { |k, h| h[k] = 0 },
           generated_at: Time.now.iso8601
         },
-        violations_by_page: [],
-        violations_by_rule: {}
+        violations_by_rule: {},
+        violations_by_page: []
       }
     end
 
@@ -132,16 +132,16 @@ module CapybaraAccessibilityAudit
         report[:violations_by_rule].each do |rule_id, rule_data|
           if rules[rule_id]
             rules[rule_id][:num_occurrences] += rule_data[:num_occurrences]
-            rules[rule_id][:pages] = (rules[rule_id][:pages] + rule_data[:pages]).uniq
+            rules[rule_id][:pages] = (rules[rule_id][:pages] + rule_data[:pages]).uniq.sort
           else
             rules[rule_id] = {
               impact: rule_data[:impact],
               description: rule_data[:description],
               help: rule_data[:help],
               helpUrl: rule_data[:helpUrl],
-              tags: rule_data[:tags],
+              tags: rule_data[:tags]&.sort || [],
               num_occurrences: rule_data[:num_occurrences],
-              pages: rule_data[:pages].dup
+              pages: rule_data[:pages].dup.sort
             }
           end
         end
