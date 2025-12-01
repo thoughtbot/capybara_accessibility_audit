@@ -1,7 +1,7 @@
 {
   "summary": {
     "total_violations": 1,
-    "pages_with_violations": 1,
+    "num_pages_with_violations": 1,
     "violations_by_impact": {
       "critical": 1,
       "serious": 0,
@@ -80,7 +80,7 @@
         "RGAAv4",
         "RGAA-11.1.1"
       ],
-      "occurrences": 1,
+      "num_occurrences": 1,
       "pages": [
         "http://example.com/violations?rules%5B%5D=label"
       ]

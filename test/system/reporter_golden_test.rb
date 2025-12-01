@@ -91,7 +91,7 @@ class ReporterGoldenTest < ApplicationSystemTestCase
     # Compare structure
     assert_equal expected_data.keys.sort, normalized_actual.keys.sort, "Top-level keys don't match"
     assert_equal 0, normalized_actual[:summary][:total_violations], "Expected 0 violations"
-    assert_equal 0, normalized_actual[:summary][:pages_with_violations], "Expected 0 pages with violations"
+    assert_equal 0, normalized_actual[:summary][:num_pages_with_violations], "Expected 0 pages with violations"
     assert_equal [], normalized_actual[:violations_by_page], "Expected empty violations_by_page"
     assert_equal({}, normalized_actual[:violations_by_rule], "Expected empty violations_by_rule")
   end

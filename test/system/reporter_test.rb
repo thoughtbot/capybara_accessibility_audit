@@ -77,7 +77,7 @@ class ReporterJsonFileTest < ApplicationSystemTestCase
     # Verify summary
     summary = report_data[:summary]
     assert summary[:total_violations] > 0
-    assert_equal 1, summary[:pages_with_violations]
+    assert_equal 1, summary[:num_pages_with_violations]
     assert_kind_of String, summary[:generated_at]
 
     # Verify violations by page
@@ -95,7 +95,7 @@ class ReporterJsonFileTest < ApplicationSystemTestCase
     assert_includes rule_data, :help
     assert_includes rule_data, :helpUrl
     assert_includes rule_data, :tags
-    assert_includes rule_data, :occurrences
+    assert_includes rule_data, :num_occurrences
     assert_includes rule_data, :pages
   end
 
@@ -111,7 +111,7 @@ class ReporterJsonFileTest < ApplicationSystemTestCase
     # Should have label violations from both pages
     label_rule = report_data[:violations_by_rule][:label]
     assert_equal 2, label_rule[:pages].count
-    assert label_rule[:occurrences] >= 2
+    assert label_rule[:num_occurrences] >= 2
   end
 end
 

@@ -107,7 +107,7 @@ module CapybaraAccessibilityAudit
       {
         summary: {
           total_violations: total_violation_count,
-          pages_with_violations: violations.count,
+          num_pages_with_violations: violations.count,
           violations_by_impact: violations_by_impact,
           generated_at: Time.now.iso8601
         },
@@ -145,10 +145,10 @@ module CapybaraAccessibilityAudit
             help: violation[:help],
             helpUrl: violation[:helpUrl],
             tags: violation[:tags],
-            occurrences: 0,
+            num_occurrences: 0,
             pages: []
           }
-          rule_details[rule_id][:occurrences] += violation[:nodes].count
+          rule_details[rule_id][:num_occurrences] += violation[:nodes].count
           rule_details[rule_id][:pages] << page_data[:url] unless rule_details[rule_id][:pages].include?(page_data[:url])
         end
       end
@@ -156,7 +156,7 @@ module CapybaraAccessibilityAudit
       rule_details.sort_by do |_id, data|
         [
           -IMPACT_PRIORITY.fetch(data[:impact].to_s, 0),
-          -data[:occurrences]
+          -data[:num_occurrences]
         ]
       end.to_h
     end
