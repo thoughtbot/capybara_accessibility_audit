@@ -2,6 +2,12 @@
   "summary": {
     "total_violations": 1,
     "pages_with_violations": 1,
+    "violations_by_impact": {
+      "critical": 1,
+      "serious": 0,
+      "moderate": 0,
+      "minor": 0
+    },
     "generated_at": "<TIMESTAMP>"
   },
   "violations_by_page": [

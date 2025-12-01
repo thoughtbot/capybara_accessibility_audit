@@ -5,6 +5,13 @@ require "fileutils"
 
 module CapybaraAccessibilityAudit
   class Reporter
+    IMPACT_PRIORITY = {
+      "critical" => 4,
+      "serious" => 3,
+      "moderate" => 2,
+      "minor" => 1
+    }
+
     def self.violations
       @violations ||= []
     end
@@ -101,11 +108,27 @@ module CapybaraAccessibilityAudit
         summary: {
           total_violations: total_violation_count,
           pages_with_violations: violations.count,
+          violations_by_impact: violations_by_impact,
           generated_at: Time.now.iso8601
         },
         violations_by_page: violations,
         violations_by_rule: group_violations_by_rule
       }
+    end
+
+    private_class_method def self.violations_by_impact
+      impact_counts = Hash.new(0)
+
+      violations.each do |page_data|
+        page_data[:violations].each do |violation|
+          impact = violation[:impact].to_s
+          impact_counts[impact] += violation[:nodes].count
+        end
+      end
+
+      IMPACT_PRIORITY.keys.sort_by { |impact| -IMPACT_PRIORITY[impact] }.each_with_object({}) do |impact, result|
+        result[impact] = impact_counts[impact]
+      end
     end
 
     private_class_method def self.group_violations_by_rule
@@ -130,7 +153,12 @@ module CapybaraAccessibilityAudit
         end
       end
 
-      rule_details.sort_by { |_id, data| -data[:occurrences] }.to_h
+      rule_details.sort_by do |_id, data|
+        [
+          -IMPACT_PRIORITY.fetch(data[:impact].to_s, 0),
+          -data[:occurrences]
+        ]
+      end.to_h
     end
   end
 end
