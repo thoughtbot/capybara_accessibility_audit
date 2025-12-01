@@ -89,6 +89,7 @@ module CapybaraAccessibilityAudit
 
       def initialize(file_path)
         @file_path = file_path
+        Reporter.report_file_path = file_path
       end
 
       def report?
@@ -96,7 +97,6 @@ module CapybaraAccessibilityAudit
       end
 
       def handle_violations(audit:, url:)
-        Reporter.report_file_path = file_path
         Reporter.add_violation(url: url, audit: audit)
         nil # Don't fail the test
       end

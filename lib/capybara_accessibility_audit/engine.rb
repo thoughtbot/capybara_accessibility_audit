@@ -33,7 +33,6 @@ module CapybaraAccessibilityAudit
           config.include CapybaraAccessibilityAudit::AuditSystemTestExtensions, type: :feature
 
           configure = proc do
-            # Use the backwards-compatible accessor which handles conversion
             self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
@@ -42,9 +41,8 @@ module CapybaraAccessibilityAudit
           config.before(type: :system, &configure)
           config.before(type: :feature, &configure)
 
-          # Output report at the end of the test suite if violations were collected
           config.after(:suite) do
-            Reporter.report! if Reporter.violations.any?
+            Reporter.report!
           end
         end
       end
@@ -54,7 +52,7 @@ module CapybaraAccessibilityAudit
     config.after_initialize do
       if defined?(Minitest)
         Minitest.after_run do
-          Reporter.report! if Reporter.violations.any?
+          Reporter.report!
         end
       end
     end

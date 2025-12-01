@@ -1,0 +1,15 @@
+{
+  "summary": {
+    "total_violations": 0,
+    "num_pages_with_violations": 0,
+    "violations_by_impact": {
+      "critical": 0,
+      "serious": 0,
+      "moderate": 0,
+      "minor": 0
+    },
+    "generated_at": "<TIMESTAMP>"
+  },
+  "violations_by_page": [],
+  "violations_by_rule": {}
+}
