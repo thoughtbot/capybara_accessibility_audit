@@ -32,9 +32,9 @@ module CapybaraAccessibilityAudit
         Disabled.new
       when true # Backwards compatibility: accessibility_audit_enabled = true
         Assert.new
-      when :assert, "assert", nil
+      when :assert
         Assert.new
-      when :stdout, "stdout"
+      when :stdout
         StdoutReporter.new
       when Hash
         if mode_config[:file]
