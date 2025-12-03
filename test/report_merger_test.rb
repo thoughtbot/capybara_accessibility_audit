@@ -35,7 +35,7 @@ module CapybaraAccessibilityAudit
 
       assert_equal 1, merged[:violations_by_page].count
       assert_equal 2, merged[:violations_by_page].first[:violations].count
-      assert_equal ["image-alt", "label"].sort,
+      assert_equal ["image-alt", "label"],
         merged[:violations_by_page].first[:violations].map { |v| v[:id] }.sort
     end
 
