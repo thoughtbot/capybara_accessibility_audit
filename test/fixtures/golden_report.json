@@ -1,0 +1,89 @@
+{
+  "summary": {
+    "total_violations": 1,
+    "num_pages_with_violations": 1,
+    "num_violations_by_impact": {
+      "critical": 1,
+      "serious": 0,
+      "moderate": 0,
+      "minor": 0
+    },
+    "generated_at": "<TIMESTAMP>"
+  },
+  "violations_by_rule": {
+    "label": {
+      "impact": "critical",
+      "description": "Ensure every form element has a label",
+      "help": "Form elements must have labels",
+      "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label?application=axeAPI",
+      "tags": [
+        "ACT",
+        "EN-301-549",
+        "EN-9.4.1.2",
+        "RGAA-11.1.1",
+        "RGAAv4",
+        "TT5.c",
+        "TTv5",
+        "cat.forms",
+        "section508",
+        "section508.22.n",
+        "wcag2a",
+        "wcag412"
+      ],
+      "num_occurrences": 1,
+      "pages": [
+        "http://example.com/violations?rules%5B%5D=label"
+      ]
+    }
+  },
+  "violations_by_page": [
+    {
+      "url": "http://example.com/violations?rules%5B%5D=label",
+      "timestamp": "<TIMESTAMP>",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "description": "Ensure every form element has a label",
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.11/label?application=axeAPI",
+          "tags": [
+            "cat.forms",
+            "wcag2a",
+            "wcag412",
+            "section508",
+            "section508.22.n",
+            "TTv5",
+            "TT5.c",
+            "EN-301-549",
+            "EN-9.4.1.2",
+            "ACT",
+            "RGAAv4",
+            "RGAA-11.1.1"
+          ],
+          "nodes": [
+            {
+              "html": "<input>",
+              "target": [
+                "input"
+              ],
+              "failureSummary": "Fix any of the following:\n  Element does not have an implicit (wrapped) <label>\n  Element does not have an explicit <label>\n  aria-label attribute does not exist or is empty\n  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n  Element has no title attribute\n  Element has no placeholder attribute\n  Element's default semantics were not overridden with role=\"none\" or role=\"presentation\"",
+              "impact": "critical"
+            }
+          ]
+        }
+      ],
+      "test_engine": {
+        "name": "axe-core",
+        "version": "VERSION"
+      },
+      "test_environment": {
+        "orientationAngle": 0,
+        "orientationType": "landscape-primary",
+        "userAgent": "USER_AGENT",
+        "windowHeight": 0,
+        "windowWidth": 0
+      }
+    }
+  ]
+}

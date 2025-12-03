@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Add report-only mode for accessibility violations
+
+  Introduces the ability to collect and report accessibility violations without
+  failing tests. Configure `config.capybara_accessibility_audit.audit_enabled`
+  with `:stdout` to log violations to stdout, or `{ file: 'path' }` to export
+  structured JSON reports with full violation details including severity, WCAG
+  tags, affected elements, and remediation guidance.
+
+  Maintains full backwards compatibility with existing `true`/`false` values.
+
+  *Daniel Gasienica*
+
 ## 0.2.0 (April 08, 2024)
 
 - Remove unused `require "axe-capybara"` statement

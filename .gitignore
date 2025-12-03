@@ -6,3 +6,7 @@
 /test/dummy/log/*.log
 /test/dummy/tmp/
 Gemfile.lock
+
+# Claude
+**/.claude/settings.local.json
+**/CLAUDE.local.md
