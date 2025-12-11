@@ -1,6 +1,7 @@
 module CapybaraAccessibilityAudit
   class Engine < ::Rails::Engine
     config.capybara_accessibility_audit = ActiveSupport::OrderedOptions.new
+    config.capybara_accessibility_audit.auditor = AxeAuditor
     config.capybara_accessibility_audit.audit_after = %i[
       visit
       click_button
@@ -9,6 +10,7 @@ module CapybaraAccessibilityAudit
       click_on
     ]
     config.capybara_accessibility_audit.audit_enabled = true
+    config.capybara_accessibility_audit.reporter = RaiseReporter
 
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
@@ -17,6 +19,13 @@ module CapybaraAccessibilityAudit
         self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
         accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
+
+        setup do
+          auditor_class = app.config.capybara_accessibility_audit.auditor
+          reporter_class = app.config.capybara_accessibility_audit.reporter
+
+          @accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
+        end
       end
     end
 
@@ -32,6 +41,11 @@ module CapybaraAccessibilityAudit
             self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
 
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
+
+            auditor_class = app.config.capybara_accessibility_audit.auditor
+            reporter_class = app.config.capybara_accessibility_audit.reporter
+
+            @accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
           end
 
           config.before(type: :system, &configure)

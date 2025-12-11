@@ -1,11 +1,9 @@
 require "test_helper"
 
-class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
-  driven_by :selenium_headless, using: :headless_chrome, screen_size: [1400, 1400]
+Capybara.javascript_driver = ENV.fetch("DRIVER", "selenium_chrome_headless").to_sym
 
-  def self.debug!
-    driven_by :selenium, using: :chrome, screen_size: [1400, 1400]
-  end
+class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
+  driven_by Capybara.javascript_driver, screen_size: [1400, 1400], options: {js_errors: true}
 
   def assert_rule_violation(rule = nil, with: rule, without: nil, &block)
     exception = assert_raises(Minitest::Assertion, &block)

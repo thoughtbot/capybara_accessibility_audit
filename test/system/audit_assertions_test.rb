@@ -49,6 +49,8 @@ class AuditAssertionsTest < ApplicationSystemTestCase
     skip_accessibility_audits do
       visit violations_path(rules: %w[label])
     end
+
+    pass "skipped automatic accessibility audit"
   end
 
   test "raises violations within a skip_accessibility_violation block that does not apply" do
@@ -88,6 +90,8 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
     click_on "Violate rule: label"
     go_back
     click_on "Violate rule: image-alt"
+
+    pass "skipped automatic accessibility audit"
   end
 
   test "flunks on calls within with_accessibility_audits" do
@@ -164,5 +168,7 @@ class SkippingRackTestDriversTest < ApplicationSystemTestCase
   test "ignores violations" do
     visit violations_path
     click_on "Violate rule: label"
+
+    pass "skipped automatic accessibility audit"
   end
 end

@@ -1,5 +1,3 @@
-require "axe/matchers/be_axe_clean"
-
 module CapybaraAccessibilityAudit
   module AuditSystemTestExtensions
     extend ActiveSupport::Concern
@@ -19,7 +17,7 @@ module CapybaraAccessibilityAudit
       MODAL_METHODS.each do |method|
         define_method method do |*arguments, **options, &block|
           result = super(*arguments, **options) { skip_accessibility_audits(&block) }
-          result.tap { Auditor.new(self).audit!(method) }
+          result.tap { Adapter.new(self).audit!(method) }
         end
       end
     end
@@ -35,7 +33,7 @@ module CapybaraAccessibilityAudit
       def accessibility_audit_after(*methods)
         (methods.flatten.to_set - accessibility_audit_after_methods).each do |method|
           define_method method do |*arguments, **options, &block|
-            super(*arguments, **options, &block).tap { Auditor.new(self).audit!(method) }
+            super(*arguments, **options, &block).tap { Adapter.new(self).audit!(method) }
           end
 
           accessibility_audit_after_methods << method
@@ -89,7 +87,7 @@ module CapybaraAccessibilityAudit
       accessibility_audit_options.skipping = skipping
     end
 
-    def assert_no_accessibility_violations(**options)
+    def assert_no_accessibility_violations(auditor: @accessibility_audit_auditor, **options)
       options.assert_valid_keys(
         :according_to,
         :checking,
@@ -100,10 +98,7 @@ module CapybaraAccessibilityAudit
       )
       options.compact_blank!
 
-      axe_matcher = Axe::Matchers::BeAxeClean.new
-      axe_matcher = options.inject(axe_matcher) { |matcher, option| matcher.public_send(*option) }
-
-      assert axe_matcher.matches?(page), axe_matcher.failure_message
+      auditor.audit(**options)
     end
   end
 end
