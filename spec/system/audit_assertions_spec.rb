@@ -1,8 +1,8 @@
 require "spec_helper"
 
-RSpec.describe "Audit assertions", type: ENV.fetch("RSPEC_TYPE", "system") do
-  before do
-    driven_by :selenium_headless, using: :headless_chrome, screen_size: [1400, 1400]
+RSpec.describe "Audit assertions", type: :system, js: true do
+  before :all do
+    driven_by Capybara.javascript_driver
   end
 
   it "flunks on violations detected after #visit" do

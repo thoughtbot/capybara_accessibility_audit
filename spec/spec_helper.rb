@@ -7,18 +7,11 @@ require "rspec/rails"
 
 Dummy::Application.initialize!
 
-module FeatureSpecBackports
-  def driven_by(name, **)
-    Capybara.current_driver = Capybara.javascript_driver = name
-  end
-end
-
 RSpec.configure do |config|
   config.use_active_record = false
 
   config.filter_rails_from_backtrace!
-
-  config.include FeatureSpecBackports, type: :feature
 end
 
+Capybara.javascript_driver = ENV.fetch("DRIVER", "selenium_chrome_headless").to_sym
 Capybara.server = :puma, {Silent: true}

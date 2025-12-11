@@ -1,5 +1,5 @@
 module CapybaraAccessibilityAudit
-  class Auditor
+  class Adapter
     delegate_missing_to :@test
 
     def initialize(test)

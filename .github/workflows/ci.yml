@@ -8,6 +8,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        driver:
+          - "cuprite"
+          - "playwright"
+          - "selenium_chrome_headless"
         ruby-version:
           - "3.2"
           - "3.3"
@@ -19,9 +23,10 @@ jobs:
           - "7.2"
 
     env:
+      DRIVER: ${{ matrix.driver }}
       RAILS_VERSION: ${{ matrix.rails-version }}
 
-    name: ${{ format('Tests (Ruby {0}, Rails {1})', matrix.ruby-version, matrix.rails-version) }}
+    name: ${{ format('Tests (Ruby {0}, Rails {1}, {2})', matrix.ruby-version, matrix.rails-version, matrix.driver) }}
     runs-on: "ubuntu-latest"
 
     steps:
@@ -31,8 +36,15 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true
 
+      - if: ${{ matrix.driver == 'playwright' }}
+        uses: "actions/setup-node@v5"
+        with:
+          cache: "yarn"
+
+      - if: ${{ matrix.driver == 'playwright' }}
+        run: yarn install && yarn playwright install
+
       - run: bin/rails standard
         if: matrix.ruby-version != 3.2
       - run: bin/rails test:all
       - run: bundle exec rspec
-      - run: RSPEC_TYPE=feature bundle exec rspec
