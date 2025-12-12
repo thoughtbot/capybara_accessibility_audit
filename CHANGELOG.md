@@ -7,13 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Drop support for [End of Life Ruby versions 3.0 and 3.1](https://www.ruby-lang.org/en/downloads/branches/)
+- Drop support for [End of Life Rails versions 6.1, 7.0, and 7.1](https://rubyonrails.org/maintenance)
+
 ## 0.2.0 (April 08, 2024)
 
 - Remove unused `require "axe-capybara"` statement
 
   *Sean Doyle*
 
-- Drop support for [End of Life version 2.7](https://www.ruby-lang.org/en/downloads/branches/)
+- Drop support for [End of Life Ruby version 2.7](https://www.ruby-lang.org/en/downloads/branches/)
 
   *Sean Doyle*
 
