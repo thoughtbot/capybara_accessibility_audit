@@ -157,16 +157,4 @@ RSpec.describe "Audit assertions", type: :system, js: true do
       click_on "Violate rule: label"
     end
   end
-
-  def assert_rule_violation(rule = nil, with: rule, without: nil, &block)
-    exception = assert_raises(Minitest::Assertion, &block)
-
-    Array(with).flatten.each do |included|
-      expect(exception.message).to include(included)
-    end
-
-    Array(without).flatten.each do |excluded|
-      expect(exception.message).not_to include(excluded)
-    end
-  end
 end

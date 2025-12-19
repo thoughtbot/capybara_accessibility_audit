@@ -10,21 +10,22 @@ module CapybaraAccessibilityAudit
       click_on
     ]
     config.capybara_accessibility_audit.audit_enabled = true
-    config.capybara_accessibility_audit.reporter = RaiseReporter
+    config.capybara_accessibility_audit.reporter = :raise
 
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
         include CapybaraAccessibilityAudit::AuditSystemTestExtensions
 
         self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
+        self.accessibility_audit_reporter = app.config.capybara_accessibility_audit.reporter
 
         accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
         setup do
           auditor_class = app.config.capybara_accessibility_audit.auditor
-          reporter_class = app.config.capybara_accessibility_audit.reporter
+          reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-          accessibility_audit_options.auditor = auditor_class.new(page, reporter_class.new(self))
+          self.accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
         end
       end
     end
@@ -43,9 +44,9 @@ module CapybaraAccessibilityAudit
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
             auditor_class = app.config.capybara_accessibility_audit.auditor
-            reporter_class = app.config.capybara_accessibility_audit.reporter
+            reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-            accessibility_audit_options.auditor = auditor_class.new(page, reporter_class.new(self))
+            self.accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
           end
 
           config.before(type: :system, &configure)
