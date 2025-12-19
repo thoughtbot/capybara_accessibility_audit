@@ -8,7 +8,13 @@ module CapybaraAccessibilityAudit
 
     def audit!(method)
       if accessibility_audit_enabled && method.in?(accessibility_audit_after_methods) && javascript_enabled?
-        assert_no_accessibility_violations(**accessibility_audit_options)
+        ActiveSupport::Notifications.instrument "audit.capybara_accessibility_audit" do |payload|
+          payload[:method] = method
+          payload[:options] = accessibility_audit_options
+          payload[:test] = @test
+
+          assert_no_accessibility_violations(**accessibility_audit_options)
+        end
       end
     end
 

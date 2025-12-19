@@ -87,7 +87,8 @@ module CapybaraAccessibilityAudit
       accessibility_audit_options.skipping = skipping
     end
 
-    def assert_no_accessibility_violations(auditor: @accessibility_audit_auditor, **options)
+    def assert_no_accessibility_violations(auditor: accessibility_audit_options.auditor, **options)
+      options = options.with_defaults(accessibility_audit_options.except(:auditor))
       options.assert_valid_keys(
         :according_to,
         :checking,

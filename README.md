@@ -60,6 +60,35 @@ end
 [aXe]: https://www.deque.com/axe/
 [axe-core-rspec]: https://github.com/dequelabs/axe-core-gems/blob/develop/packages/axe-core-rspec/README.md#matcher
 
+## Active Support instrumentation
+
+Capybara Accessibility Audit integrates with [Active Support's
+instrumentation][] through publishing [ActiveSupport::Notifications][].
+
+### `audit.capybara_accessibility_audit` notification
+
+Subscribe to `audit.capybara_accessibility_audit` notifications emitted when an
+accessibility audit is automatically conducted. In addition to the
+metadata provided by default (like `name`, `duration`, and `allocations`, etc.),
+the `payload` includes additional information:
+
+| Payload       | Type                               | Description |
+| ------------- | ---------------------------------- | ----------- |
+| method        | Symbol                             | The Capybara method that triggered the audit
+| options       | [ActiveSupport::OrderedOptions][]  | The audit's configuration
+| test          | [ActionDispatch::SystemTestCase][] | The test case that triggered the audit
+
+> [!NOTE]
+> The `audit.capybara_accessibility_audit` notifications are only published when
+> an audit is conducted automatically. No `audit.capybara_accessibility_audit`
+> notifications will be published when `assert_no_accessibility_violations` is
+> invoked directly.
+
+[Active Support's instrumentation]: https://guides.rubyonrails.org/active_support_instrumentation.html
+[ActiveSupport::Notifications]: https://api.rubyonrails.org/classes/ActiveSupport/Notifications.html
+[ActiveSupport::OrderedOptions]: https://api.rubyonrails.org/classes/ActiveSupport/OrderedOptions.html
+[ActionDispatch::SystemTestCase]: https://api.rubyonrails.org/classes/ActionDispatch/SystemTestCase.html
+
 ## Frequently Asked Questions
 
 My application already exists, automated accessibility audits are uncovering violations left and right. Do I have to fix them all at once?
