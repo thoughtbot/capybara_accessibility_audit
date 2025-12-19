@@ -89,6 +89,27 @@ the `payload` includes additional information:
 [ActiveSupport::OrderedOptions]: https://api.rubyonrails.org/classes/ActiveSupport/OrderedOptions.html
 [ActionDispatch::SystemTestCase]: https://api.rubyonrails.org/classes/ActionDispatch/SystemTestCase.html
 
+### `report.capybara_accessibility_audit` notification
+
+Subscribe to `report.capybara_accessibility_audit` notifications emitted when an
+accessibility audit detects violations. The `payload` includes:
+
+| Payload       | Type                               | Description |
+| ------------- | ---------------------------------- | ----------- |
+| report        | [Axe::API::Results][]              | The underlying axe.js [Results][] object
+| options       | [ActiveSupport::OrderedOptions][]  | The audit's configuration
+| test          | [ActionDispatch::SystemTestCase][] | The test case that triggered the audit
+
+[ActiveSupport::OrderedOptions]: https://api.rubyonrails.org/classes/ActiveSupport/OrderedOptions.html
+[ActionDispatch::SystemTestCase]: https://api.rubyonrails.org/classes/ActionDispatch/SystemTestCase.html
+[Axe::API::Results]: https://github.com/dequelabs/axe-core-gems/blob/v4.11.0/packages/axe-core-api/lib/axe/api/results.rb
+[Results]: https://www.deque.com/axe/core-documentation/api-documentation/#results-object
+
+> [!NOTE]
+> The `report.capybara_accessibility_audit` notifications are only published when
+> `config.capybara_accessibility_audit.reporter` is configured with
+> `:notification` or `:log`.
+
 ## Frequently Asked Questions
 
 My application already exists, automated accessibility audits are uncovering violations left and right. Do I have to fix them all at once?
@@ -142,6 +163,28 @@ end
 
 As you resolve the violations, you can remove entries from the list of skipped
 rules.
+
+How many I conduct a preliminary audit that comprehensively exercises my system test suite without failing tests that result in violations?
+---
+
+You can configure the audit's reporting mechanism. By default, the
+`config.capybara_accessibility_audit.reporter` value is set to `:raise`, which
+will raise violation errors that will fail the test suite.
+
+To log violations, rather than raise them, you can configure
+`config.capybara_accessibility_audit.reporter` to `:log`:
+
+
+```ruby
+class MySystemTest < ApplicationSystemTestCase
+  self.accessibility_audit_reporter = :log
+
+  test "with overridden accessibility :log reporter" do
+    visit examples_path
+    # ...
+  end
+end
+```
 
 I've implemented a custom Capybara action to toggle a disclosure element. How can I automatically audit for violations after it's called?
 ---

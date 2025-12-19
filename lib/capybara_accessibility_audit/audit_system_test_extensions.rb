@@ -13,6 +13,9 @@ module CapybaraAccessibilityAudit
       class_attribute :accessibility_audit_after_methods, default: Set.new
       class_attribute :accessibility_audit_enabled, default: true
       class_attribute :accessibility_audit_options, default: ActiveSupport::OrderedOptions.new
+      class_attribute :accessibility_audit_reporter, default: :raise
+
+      attr_accessor :accessibility_audit_auditor
 
       MODAL_METHODS.each do |method|
         define_method method do |*arguments, **options, &block|
@@ -87,8 +90,7 @@ module CapybaraAccessibilityAudit
       accessibility_audit_options.skipping = skipping
     end
 
-    def assert_no_accessibility_violations(auditor: accessibility_audit_options.auditor, **options)
-      options = options.with_defaults(accessibility_audit_options.except(:auditor))
+    def assert_no_accessibility_violations(auditor: accessibility_audit_auditor, **options)
       options.assert_valid_keys(
         :according_to,
         :checking,

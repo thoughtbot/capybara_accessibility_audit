@@ -90,12 +90,10 @@ class AuditAssertionsTest < ApplicationSystemTestCase
       end
     end
 
-    assert_kind_of CapybaraAccessibilityAudit::AxeAuditor, visit_audit.payload.dig(:options, :auditor)
     assert_equal self, click_on_audit.payload[:test]
     assert_equal :visit, visit_audit.payload[:method]
     assert_equal accessibility_audit_options, visit_audit.payload[:options]
 
-    assert_kind_of CapybaraAccessibilityAudit::AxeAuditor, click_on_audit.payload.dig(:options, :auditor)
     assert_equal self, click_on_audit.payload[:test]
     assert_equal :click_on, click_on_audit.payload[:method]
     assert_equal accessibility_audit_options, click_on_audit.payload[:options]
