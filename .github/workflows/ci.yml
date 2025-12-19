@@ -8,6 +8,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        test:
+          - "bin/rails test:all"
+          - "bundle exec rspec"
         driver:
           - "cuprite"
           - "playwright"
@@ -26,7 +29,7 @@ jobs:
       DRIVER: ${{ matrix.driver }}
       RAILS_VERSION: ${{ matrix.rails-version }}
 
-    name: ${{ format('Tests (Ruby {0}, Rails {1}, {2})', matrix.ruby-version, matrix.rails-version, matrix.driver) }}
+    name: ${{ format('Tests (Ruby {0}, Rails {1}, {2}, Driver {3})', matrix.ruby-version, matrix.rails-version, matrix.test, matrix.driver) }}
     runs-on: "ubuntu-latest"
 
     steps:
@@ -45,6 +48,12 @@ jobs:
         run: yarn install && yarn playwright install
 
       - run: bin/rails standard
-        if: matrix.ruby-version != 3.2
-      - run: bin/rails test:all
-      - run: bundle exec rspec
+      - run: ${{ matrix.test }}
+
+      - name: Keep screenshots from failed system tests
+        uses: actions/upload-artifact@v6
+        if: failure()
+        with:
+          name: screenshots
+          path: ${{ github.workspace }}/tmp/screenshots
+          if-no-files-found: ignore

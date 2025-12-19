@@ -17,6 +17,7 @@ end
 
 gem "rails", rails_constraint
 gem "rspec-rails"
+gem "minitest", "< 6"
 
 gem "puma"
 gem "standard", "~> 1.12"
