@@ -80,6 +80,26 @@ class AuditAssertionsTest < ApplicationSystemTestCase
     accept_prompt("Hello?") { click_button "Open prompt" }
     dismiss_prompt("Hello?") { click_button "Open prompt" }
   end
+
+  test "publishes audit.capybara_accessibility_audit notifications" do
+    visit_audit, click_on_audit = capture_notifications "audit.capybara_accessibility_audit" do
+      visit violations_path
+
+      assert_rule_violation "label: Form elements must have labels" do
+        click_on "Violate rule: label"
+      end
+    end
+
+    assert_kind_of CapybaraAccessibilityAudit::AxeAuditor, visit_audit.payload.dig(:options, :auditor)
+    assert_equal self, click_on_audit.payload[:test]
+    assert_equal :visit, visit_audit.payload[:method]
+    assert_equal accessibility_audit_options, visit_audit.payload[:options]
+
+    assert_kind_of CapybaraAccessibilityAudit::AxeAuditor, click_on_audit.payload.dig(:options, :auditor)
+    assert_equal self, click_on_audit.payload[:test]
+    assert_equal :click_on, click_on_audit.payload[:method]
+    assert_equal accessibility_audit_options, click_on_audit.payload[:options]
+  end
 end
 
 class DisablingAuditAssertionsTest < ApplicationSystemTestCase
