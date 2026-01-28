@@ -8,7 +8,7 @@ module CapybaraAccessibilityAudit
     class_attribute :source, instance_accessor: false, default: Axe::Configuration.instance.jslib
 
     def initialize(page, reporter)
-      @page = page
+      @page_proc = page.is_a?(Proc) ? page : -> { page }
       @reporter = reporter
     end
 
@@ -22,10 +22,25 @@ module CapybaraAccessibilityAudit
 
     private
 
+    def page
+      @page_proc.call
+    end
+
     def run(config)
       context, options = split(config)
 
-      @page.evaluate_async_script <<~JS, context.to_h, options.to_h
+      # Convert to JSON-compatible hashes (all symbols become strings)
+      # Playwright driver can’t serialize Ruby symbols, e.g.
+      #
+      #   accessibility_audit_options.according_to = [
+      #     :wcag2a,
+      #     :wcag2aa
+      #   ]
+      #
+      context_hash = context.to_h.as_json
+      options_hash = options.to_h.as_json
+
+      page.evaluate_async_script <<~JS, context_hash, options_hash
         const [ context, options, callback ] = arguments
 
         axe.run(context, options).then(callback)
@@ -47,11 +62,11 @@ module CapybaraAccessibilityAudit
     end
 
     def install
-      @page.execute_script(self.class.source) unless installed?
+      page.execute_script(self.class.source) unless installed?
     end
 
     def installed?
-      @page.evaluate_script <<~JS
+      page.evaluate_script <<~JS
         "axe" in window && typeof axe.run === "function"
       JS
     end
