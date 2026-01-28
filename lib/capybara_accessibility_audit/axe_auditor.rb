@@ -8,7 +8,7 @@ module CapybaraAccessibilityAudit
     class_attribute :source, instance_accessor: false, default: Axe::Configuration.instance.jslib
 
     def initialize(page, reporter)
-      @page = page
+      @page_proc = page.is_a?(Proc) ? page : -> { page }
       @reporter = reporter
     end
 
@@ -22,10 +22,14 @@ module CapybaraAccessibilityAudit
 
     private
 
+    def page
+      @page_proc.call
+    end
+
     def run(config)
       context, options = split(config)
 
-      @page.evaluate_async_script <<~JS, context.to_h, options.to_h
+      page.evaluate_async_script <<~JS, context.to_h, options.to_h
         const [ context, options, callback ] = arguments
 
         axe.run(context, options).then(callback)
@@ -47,11 +51,11 @@ module CapybaraAccessibilityAudit
     end
 
     def install
-      @page.execute_script(self.class.source) unless installed?
+      page.execute_script(self.class.source) unless installed?
     end
 
     def installed?
-      @page.evaluate_script <<~JS
+      page.evaluate_script <<~JS
         "axe" in window && typeof axe.run === "function"
       JS
     end
