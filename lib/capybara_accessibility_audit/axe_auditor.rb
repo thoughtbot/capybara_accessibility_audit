@@ -15,7 +15,7 @@ module CapybaraAccessibilityAudit
     def audit(**options)
       install
 
-      results = run(options)
+      results = run(options).then { |results| denullify(results) }
 
       @reporter.report Axe::API::Results.new(results)
     end
@@ -54,6 +54,17 @@ module CapybaraAccessibilityAudit
       @page.evaluate_script <<~JS
         "axe" in window && typeof axe.run === "function"
       JS
+    end
+
+    def denullify(value)
+      case value
+      when Hash
+        value.transform_values { |nested| denullify(nested) } unless value.empty?
+      when Array
+        value.map { |nested| denullify(nested) }
+      else
+        value
+      end
     end
   end
 end
