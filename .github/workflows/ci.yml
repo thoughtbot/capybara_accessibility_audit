@@ -24,9 +24,13 @@ jobs:
           - "8.1"
           - "8.0"
           - "7.2"
+        exclude:
+          - ruby-version: "3.2"
+            rails-version: "main"
 
     env:
       DRIVER: ${{ matrix.driver }}
+      FERRUM_PROCESS_TIMEOUT: 60
       RAILS_VERSION: ${{ matrix.rails-version }}
 
     name: ${{ format('Tests (Ruby {0}, Rails {1}, {2}, Driver {3})', matrix.ruby-version, matrix.rails-version, matrix.test, matrix.driver) }}
@@ -45,7 +49,9 @@ jobs:
           cache: "yarn"
 
       - if: ${{ matrix.driver == 'playwright' }}
-        run: yarn install && yarn playwright install
+        run: |
+          yarn add -D playwright@$(bundle exec ruby -e 'require "playwright"; print Playwright::COMPATIBLE_PLAYWRIGHT_VERSION')
+          yarn install && yarn playwright install
 
       - run: bin/rails standard
       - run: ${{ matrix.test }}
