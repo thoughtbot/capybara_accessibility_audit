@@ -40,6 +40,12 @@ class AuditAssertionsTest < ApplicationSystemTestCase
     end
   end
 
+  test "flunks on violations detected within #using_session" do
+    assert_rule_violation "label: Form elements must have labels" do
+      using_session(:other) { visit violations_path(rules: %w[label]) }
+    end
+  end
+
   test "ignores violations within a matching skip_accessibility_violations block" do
     skip_accessibility_violations("label") { visit violations_path(rules: %w[label]) }
     skip_accessibility_violations(%w[label]) { visit violations_path(rules: %w[label]) }

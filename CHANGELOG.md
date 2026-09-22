@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Resolve the Capybara session when the audit runs, so that a suite that calls
+  `driven_by` from its own `before` hook audits through the selected driver
 - Send the audit options to the browser as JSON values, so that the
   `:playwright` driver accepts `according_to` and `checking_only`
 - Add support for `:cuprite` and `:playwright` system test drivers
