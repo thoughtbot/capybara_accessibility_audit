@@ -25,7 +25,7 @@ module CapybaraAccessibilityAudit
           auditor_class = app.config.capybara_accessibility_audit.auditor
           reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-          self.accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
+          self.accessibility_audit_auditor = auditor_class.new(-> { page }, reporter_class.new(self))
         end
       end
     end
@@ -46,7 +46,7 @@ module CapybaraAccessibilityAudit
             auditor_class = app.config.capybara_accessibility_audit.auditor
             reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-            self.accessibility_audit_auditor = auditor_class.new(page, reporter_class.new(self))
+            self.accessibility_audit_auditor = auditor_class.new(-> { page }, reporter_class.new(self))
           end
 
           config.before(type: :system, &configure)
