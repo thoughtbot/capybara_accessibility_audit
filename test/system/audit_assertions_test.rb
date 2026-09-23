@@ -146,6 +146,25 @@ class DisablingAuditAssertionsTest < ApplicationSystemTestCase
       assert_no_accessibility_violations checking: "label", skipping: "image-alt"
     end
   end
+
+  test "flunks on calls to assert_no_accessibility_violations according to a set of tags" do
+    visit violations_path(rules: %w[label])
+
+    assert_rule_violation "label: Form elements must have labels" do
+      assert_no_accessibility_violations according_to: :wcag2a
+    end
+  end
+
+  test "flunks on calls to assert_no_accessibility_violations checking only the rules it is given" do
+    visit violations_path(rules: %w[label image-alt])
+
+    assert_rule_violation(
+      with: "label: Form elements must have labels",
+      without: "image-alt: Images must have alternative text"
+    ) do
+      assert_no_accessibility_violations checking_only: :label
+    end
+  end
 end
 
 class SkippingAuditAssertionsTest < ApplicationSystemTestCase

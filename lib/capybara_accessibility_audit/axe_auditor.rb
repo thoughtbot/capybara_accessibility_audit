@@ -25,7 +25,7 @@ module CapybaraAccessibilityAudit
     def run(config)
       context, options = split(config)
 
-      @page.evaluate_async_script <<~JS, context.to_h, options.to_h
+      @page.evaluate_async_script <<~JS, context.as_json, options.as_json
         const [ context, options, callback ] = arguments
 
         axe.run(context, options).then(callback)
