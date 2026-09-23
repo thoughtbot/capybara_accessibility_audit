@@ -23,7 +23,7 @@ module CapybaraAccessibilityAudit
       settle
       install
 
-      results = run(options).then { |results| denullify(results) }
+      results = run(options)
 
       @reporter.report Axe::API::Results.new(results)
     end
@@ -85,16 +85,22 @@ module CapybaraAccessibilityAudit
     def run(config)
       context, options = split(config)
 
-      results = page.evaluate_async_script <<~JS, context.as_json, options.as_json, ERROR_KEY
+      json = page.evaluate_async_script <<~JS, context.as_json, options.as_json, ERROR_KEY
         const [ context, options, errorKey, callback ] = arguments
 
-        axe.run(context, options).then(callback).catch(error => callback({ [errorKey]: error.message }))
+        axe.run(context, options)
+          .then(JSON.stringify)
+          .catch(error => JSON.stringify({ [errorKey]: error.message }))
+          .then(callback)
       JS
 
-      if (message = results[ERROR_KEY])
-        raise Error, message
+      case JSON.parse(json, symbolize_names: true)
+      in {capybara_accessibility_audit_error:}
+        raise Error, capybara_accessibility_audit_error
+      in Hash => report
+        report
       else
-        results
+        raise Error, "Unexpected report structure"
       end
     end
 
@@ -120,17 +126,6 @@ module CapybaraAccessibilityAudit
       page.evaluate_script <<~JS
         "axe" in window && typeof axe.run === "function"
       JS
-    end
-
-    def denullify(value)
-      case value
-      when Hash
-        value.transform_values { |nested| denullify(nested) } unless value.empty?
-      when Array
-        value.map { |nested| denullify(nested) }
-      else
-        value
-      end
     end
   end
 end

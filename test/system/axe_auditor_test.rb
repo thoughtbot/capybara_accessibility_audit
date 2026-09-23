@@ -33,5 +33,22 @@ module CapybaraAccessibilityAudit
 
       assert_match "no-such-rule", error.message
     end
+
+    test "raises the error when the results cannot be serialized" do
+      skip_accessibility_audits { visit violations_path }
+      execute_script <<~JS
+        window.axe = {
+          run: () => {
+            const results = {}
+            results.self = results
+            return Promise.resolve(results)
+          }
+        }
+      JS
+
+      assert_raises AxeAuditor::Error, match: "circular structure" do
+        assert_no_accessibility_violations
+      end
+    end
   end
 end
