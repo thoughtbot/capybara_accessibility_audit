@@ -276,6 +276,22 @@ class MySystemTest < ApplicationSystemTestCase
 end
 ```
 
+My pages render on the client. How long does the audit wait for them?
+---
+
+Capybara returns from an action as soon as the driver is done with it, and a
+page that renders on the client keeps changing after that point. The auditor
+therefore waits for the DOM to stay unchanged before it runs `axe`. It waits
+for 100 milliseconds of quiet, and it audits the page as it is after 2000
+milliseconds, so a page that never settles cannot block the suite.
+
+To change those values, override them on the auditor:
+
+```ruby
+CapybaraAccessibilityAudit::AxeAuditor.quiet_period_ms = 250
+CapybaraAccessibilityAudit::AxeAuditor.quiet_period_timeout_ms = 5000
+```
+
 ## Installation
 Add this line to your application's Gemfile:
 

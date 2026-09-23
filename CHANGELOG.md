@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Wait for the DOM to stay unchanged before the audit runs, so that content
+  the page renders after the Capybara action is audited
+- Raise the error that `axe` reports, instead of waiting for the driver's
+  script timeout
 - Resolve the Capybara session when the audit runs, so that a suite that calls
   `driven_by` from its own `before` hook audits through the selected driver
 - Send the audit options to the browser as JSON values, so that the
