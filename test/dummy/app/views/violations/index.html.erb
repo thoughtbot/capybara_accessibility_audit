@@ -4,6 +4,8 @@
   <a href="?rules[]=label">Violate rule: label</a>
   <a href="?rules[]=image-alt">Violate rule: image-alt</a>
   <a href="?rules[]=button-name">Violate rule: button-name</a>
+  <a href="?delay=300">Violate rule: image-alt after a delay</a>
+  <a href="?delay=300&amp;forever=1">Violate rule: image-alt while the page keeps changing</a>
 
   <form>
     <label for="rules">Rules to violate</label>
@@ -27,4 +29,31 @@
   <h1>image-alt</h1>
 
   <img src="https://example.com">
+<% end %>
+
+<% if params[:delay].present? %>
+  <h1>delayed image-alt</h1>
+
+  <script>
+    // Change the DOM every 25ms, then violate the image-alt rule after the
+    // delay. With ?forever=1, keep changing the DOM after the violation.
+    const injectAt = Date.now() + <%= params[:delay].to_i %>
+    const keepChanging = <%= params[:forever].present? %>
+    let injected = false
+
+    const interval = setInterval(function () {
+      const main = document.querySelector("main")
+
+      if (injected || Date.now() < injectAt) {
+        main.appendChild(document.createElement("span"))
+      } else {
+        injected = true
+        const image = document.createElement("img")
+        image.src = "https://example.com"
+        main.appendChild(image)
+
+        if (!keepChanging) clearInterval(interval)
+      }
+    }, 25)
+  </script>
 <% end %>
