@@ -16,7 +16,6 @@ jobs:
           - "playwright"
           - "selenium_chrome_headless"
         ruby-version:
-          - "3.2"
           - "3.3"
           - "3.4"
           - "4.0"
@@ -25,9 +24,6 @@ jobs:
           - "8.1"
           - "8.0"
           - "7.2"
-        exclude:
-          - ruby-version: "3.2"
-            rails-version: "main"
 
     env:
       DRIVER: ${{ matrix.driver }}
