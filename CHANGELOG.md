@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.3.0 (October 02, 2026)
+
 - Wait for the DOM to stay unchanged before the audit runs, so that content
   the page renders after the Capybara action is audited
 - Raise the error that `axe` reports, instead of waiting for the driver's
@@ -16,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Send the audit options to the browser as JSON values, so that the
   `:playwright` driver accepts `according_to` and `checking_only`
 - Add support for `:cuprite` and `:playwright` system test drivers
-- Drop support for [End of Life Ruby versions 3.0 and 3.1](https://www.ruby-lang.org/en/downloads/branches/)
+- Drop support for [End of Life Ruby versions 3.0, 3.1, and 3.2](https://www.ruby-lang.org/en/downloads/branches/)
 - Drop support for [End of Life Rails versions 6.1, 7.0, and 7.1](https://rubyonrails.org/maintenance)
 
 ## 0.2.0 (April 08, 2024)
