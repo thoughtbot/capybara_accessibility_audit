@@ -41,14 +41,23 @@ module CapybaraAccessibilityAudit
 
       observe_mutations
 
+      # Installing axe does not change the DOM, so do it while the quiet period
+      # elapses. The audit checks again before it runs, in case a page load
+      # discarded this document.
+      install
+
       until monotonic_time >= deadline
         if (duration = unchanged_for).nil?
           observe_mutations
-        elsif monotonic_time >= earliest && duration >= quiet_period_ms
-          break
+          remaining = quiet_period_ms
+        else
+          remaining = [earliest - monotonic_time, quiet_period_ms - duration].max
+          break if remaining <= 0
         end
 
-        sleep 0.01
+        # Sleep until the earliest moment the DOM could have been quiet for
+        # long enough, rather than polling on a fixed interval.
+        sleep [remaining, deadline - monotonic_time].min.clamp(1..) / 1000.0
       end
     end
 

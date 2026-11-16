@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Install `axe` while waiting for the DOM to stay unchanged, instead of after,
+  so that each audit no longer pays for sending `axe` to the browser on top of
+  the quiet period
+- Sleep until the quiet period could next elapse instead of polling the
+  browser every 10 milliseconds, which cuts the round trips each audit makes
+
 ## 0.3.0 (October 02, 2026)
 
 - Wait for the DOM to stay unchanged before the audit runs, so that content
