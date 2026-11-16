@@ -7,18 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Pass `resultTypes: ["violations"]` and `iframes: false` to `axe.run` through
-  the new `AxeAuditor.run_options`. Audits of large pages take about half as
-  long, and audits of pages with frames no longer wait on them. The
-  `report.capybara_accessibility_audit` notification's report now holds one
-  node for each passing, incomplete, and inapplicable rule. Set
-  `AxeAuditor.run_options = {}` to restore the previous behavior
-
-- Install `axe` while waiting for the DOM to stay unchanged, instead of after,
-  so that each audit no longer pays for sending `axe` to the browser on top of
-  the quiet period
-- Sleep until the quiet period could next elapse instead of polling the
-  browser every 10 milliseconds, which cuts the round trips each audit makes
+- Run `axe` with `config.capybara_accessibility_audit.auditor.default_options`, which default to `resultTypes: ["violations"]` and `iframes: false`
+- Install `axe` while waiting for the DOM to stay unchanged, instead of afterward
+- Sleep until the quiet period can elapse, instead of polling the browser every 10 milliseconds
 
 ## 0.3.0 (October 02, 2026)
 

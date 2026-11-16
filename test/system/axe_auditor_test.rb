@@ -38,15 +38,15 @@ module CapybaraAccessibilityAudit
     end
 
     test "overrides the options passed to axe.run" do
-      run_options = AxeAuditor.run_options
-      AxeAuditor.run_options = {resultTypes: ["violations"], iframes: false, rules: {label: {enabled: false}}}
+      default_options = AxeAuditor.default_options
+      AxeAuditor.default_options = {resultTypes: ["violations"], iframes: false, rules: {label: {enabled: false}}}
       skip_accessibility_audits { visit violations_path(rules: %w[label image-alt]) }
 
       assert_rule_violation with: "image-alt", without: "label: Form elements must have labels" do
         assert_no_accessibility_violations
       end
     ensure
-      AxeAuditor.run_options = run_options
+      AxeAuditor.default_options = default_options
     end
 
     test "raises the error that axe reports" do

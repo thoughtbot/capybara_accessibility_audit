@@ -292,25 +292,27 @@ CapybaraAccessibilityAudit::AxeAuditor.quiet_period_ms = 250
 CapybaraAccessibilityAudit::AxeAuditor.quiet_period_timeout_ms = 5000
 ```
 
-Which options does the auditor pass to `axe.run`?
+How is the auditor configured by default?
 ---
 
-Beneath the options of each audit, the auditor passes
-`CapybaraAccessibilityAudit::AxeAuditor.run_options` to [`axe.run`][axe.run].
-By default, they are:
+Every audit runs `axe` with the following [options][axe.run], along with the
+audit's own options:
 
-* `resultTypes: ["violations"]` reports every violating node, but only one
-  node for each passing, incomplete, and inapplicable rule. That skips most of
-  the work `axe` does on a large page, and most of the data the browser sends
-  back.
-* `iframes: false` stops `axe` from waiting on frames. The auditor does not
-  install `axe` in frames, so `axe` cannot audit their contents either way.
+* `resultTypes: ["violations"]`: the report lists every node that violates a
+  rule, and one node for each rule that passes, is incomplete, or is
+  inapplicable.
+* `iframes: false`: the audit covers the page's top-level document, and leaves
+  out the contents of its frames.
 
-To have `axe` report every node of every result, as the
-`report.capybara_accessibility_audit` notification did before, override them:
+To change them, configure `config.capybara_accessibility_audit.auditor.default_options`.
+The value replaces the defaults. For example, to report every node for every
+rule:
 
 ```ruby
-CapybaraAccessibilityAudit::AxeAuditor.run_options = {}
+# config/environments/test.rb
+Rails.application.configure do
+  config.capybara_accessibility_audit.auditor.default_options = {}
+end
 ```
 
 [axe.run]: https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter

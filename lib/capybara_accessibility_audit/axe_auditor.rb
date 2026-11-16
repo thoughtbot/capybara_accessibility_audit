@@ -15,6 +15,7 @@ module CapybaraAccessibilityAudit
     class_attribute :quiet_period_timeout_ms, instance_accessor: false, default: 2000
 
     # Options passed to every call to axe.run, beneath the audit's own options.
+    # Configure them with config.capybara_accessibility_audit.auditor.default_options.
     #
     # resultTypes: Reports only violations in full. axe still runs every rule,
     # but it skips building selectors and HTML snippets for every passing,
@@ -24,7 +25,7 @@ module CapybaraAccessibilityAudit
     # iframes: The auditor installs axe in the top-level document only, so axe
     # cannot audit a frame's contents. Without this, axe waits on every frame
     # for a response that never comes.
-    class_attribute :run_options, instance_accessor: false, default: {
+    class_attribute :default_options, instance_accessor: false, default: {
       resultTypes: ["violations"],
       iframes: false
     }.freeze
@@ -109,7 +110,7 @@ module CapybaraAccessibilityAudit
     def run(config)
       context, options = split(config)
 
-      options = self.class.run_options.as_json.deep_merge(options.as_json)
+      options = self.class.default_options.as_json.deep_merge(options.as_json)
 
       json = page.evaluate_async_script <<~JS, context.as_json, options, ERROR_KEY
         const [ context, options, errorKey, callback ] = arguments
