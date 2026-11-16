@@ -5,6 +5,10 @@ Capybara.javascript_driver = ENV.fetch("DRIVER", "selenium_chrome_headless").to_
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by Capybara.javascript_driver, screen_size: [1400, 1400], options: {js_errors: true}
 
+  # Each worker process boots its own browser and server. The suite is smaller
+  # than Rails' default threshold of 50 tests, so lower it.
+  parallelize workers: :number_of_processors, threshold: 0
+
   def capture_report(&block)
     assert_raises(Minitest::Assertion, &block).message
   end
