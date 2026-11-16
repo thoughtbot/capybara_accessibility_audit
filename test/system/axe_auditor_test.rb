@@ -13,11 +13,6 @@ module CapybaraAccessibilityAudit
     test "audits at the deadline when the page never stops changing" do
       visit violations_path
 
-      quiet_period_timeout_ms = AxeAuditor.quiet_period_timeout_ms
-      # The page violates the rule after 300ms, so a shorter deadline still
-      # proves the behavior without waiting out the 2000ms default.
-      AxeAuditor.quiet_period_timeout_ms = 1000
-
       started = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 
       assert_rule_violation "image-alt: Images must have alternative text" do
@@ -27,8 +22,6 @@ module CapybaraAccessibilityAudit
 
       # Without the deadline the wait never ends. The bound leaves room for a slow audit on CI.
       assert_operator elapsed, :<, 15
-    ensure
-      AxeAuditor.quiet_period_timeout_ms = quiet_period_timeout_ms
     end
 
     test "raises the error that axe reports" do

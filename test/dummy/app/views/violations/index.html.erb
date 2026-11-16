@@ -28,7 +28,7 @@
 <% if @violations.image_alt? %>
   <h1>image-alt</h1>
 
-  <img src="/apple-touch-icon.png">
+  <img src="https://example.com">
 <% end %>
 
 <% if params[:delay].present? %>
@@ -49,7 +49,7 @@
       } else {
         injected = true
         const image = document.createElement("img")
-        image.src = "/apple-touch-icon.png"
+        image.src = "https://example.com"
         main.appendChild(image)
 
         if (!keepChanging) clearInterval(interval)
