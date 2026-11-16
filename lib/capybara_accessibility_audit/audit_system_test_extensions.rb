@@ -14,6 +14,8 @@ module CapybaraAccessibilityAudit
       class_attribute :accessibility_audit_enabled, default: true
       class_attribute :accessibility_audit_options, default: ActiveSupport::OrderedOptions.new
       class_attribute :accessibility_audit_reporter, default: :raise
+      class_attribute :accessibility_audit_todo_file, default: nil
+      class_attribute :accessibility_audit_generate_todo, default: false
 
       attr_accessor :accessibility_audit_auditor
 

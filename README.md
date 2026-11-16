@@ -186,6 +186,51 @@ class MySystemTest < ApplicationSystemTestCase
 end
 ```
 
+How can I record my suite's existing violations, and fail only on new ones?
+---
+
+Generate a todo file. Run the suite with the `CAPYBARA_ACCESSIBILITY_AUDIT_TODO`
+environment variable set:
+
+```bash
+CAPYBARA_ACCESSIBILITY_AUDIT_TODO=1 bin/rails test:system
+```
+
+Rather than fail, each test records the violations it detects in a
+`.capybara_accessibility_audit_todo.yml` file at the root of your application:
+
+```yaml
+---
+CheckoutTest#test_submits_the_order:
+  color-contrast:
+  - ".total"
+  label:
+  - "#coupon"
+```
+
+Commit the file. Later runs read it and ignore the violations it lists for each
+test. A test still fails when it detects a violation that the file does not list,
+including a listed rule that a different node violates. A rule without a list of
+selectors permits every node that violates it.
+
+As you fix violations, remove their entries, or run the suite with
+`CAPYBARA_ACCESSIBILITY_AUDIT_TODO=1` again. A run replaces the entries for the
+tests that it runs, and keeps the entries for the tests that it does not run. In
+RSpec, the file identifies each example by its full description.
+
+To change where the file lives, or to stop reading it, configure
+`config.capybara_accessibility_audit.todo_file`:
+
+```ruby
+# config/environments/test.rb
+config.capybara_accessibility_audit.todo_file = "test/accessibility_audit_todo.yml"
+
+# config.capybara_accessibility_audit.todo_file = nil
+```
+
+To generate the file without the environment variable, set
+`config.capybara_accessibility_audit.generate_todo = true`.
+
 I've implemented a custom Capybara action to toggle a disclosure element. How can I automatically audit for violations after it's called?
 ---
 

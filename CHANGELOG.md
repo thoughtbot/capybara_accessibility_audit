@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Record a suite's violations in a todo file with
+  `CAPYBARA_ACCESSIBILITY_AUDIT_TODO=1`, and ignore the violations the file
+  lists on later runs. Configure the file's location with
+  `config.capybara_accessibility_audit.todo_file`.
+
 ## 0.3.0 (October 02, 2026)
 
 - Wait for the DOM to stay unchanged before the audit runs, so that content

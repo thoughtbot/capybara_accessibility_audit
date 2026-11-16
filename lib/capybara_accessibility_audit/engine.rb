@@ -11,6 +11,14 @@ module CapybaraAccessibilityAudit
     ]
     config.capybara_accessibility_audit.audit_enabled = true
     config.capybara_accessibility_audit.reporter = :raise
+    config.capybara_accessibility_audit.todo_file = ".capybara_accessibility_audit_todo.yml"
+    config.capybara_accessibility_audit.generate_todo = ENV["CAPYBARA_ACCESSIBILITY_AUDIT_TODO"].present?
+
+    def self.todo_file(app)
+      if (path = app.config.capybara_accessibility_audit.todo_file)
+        app.root.join(path)
+      end
+    end
 
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
@@ -18,14 +26,15 @@ module CapybaraAccessibilityAudit
 
         self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
         self.accessibility_audit_reporter = app.config.capybara_accessibility_audit.reporter
+        self.accessibility_audit_todo_file = Engine.todo_file(app)
+        self.accessibility_audit_generate_todo = app.config.capybara_accessibility_audit.generate_todo
 
         accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
         setup do
           auditor_class = app.config.capybara_accessibility_audit.auditor
-          reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-          self.accessibility_audit_auditor = auditor_class.new(self, reporter_class.new(self))
+          self.accessibility_audit_auditor = auditor_class.new(self, CapybaraAccessibilityAudit.reporter_for(self))
         end
       end
     end
@@ -40,13 +49,14 @@ module CapybaraAccessibilityAudit
 
           configure = proc do
             self.accessibility_audit_enabled = app.config.capybara_accessibility_audit.audit_enabled
+            self.accessibility_audit_todo_file = Engine.todo_file(app)
+            self.accessibility_audit_generate_todo = app.config.capybara_accessibility_audit.generate_todo
 
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
             auditor_class = app.config.capybara_accessibility_audit.auditor
-            reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
-            self.accessibility_audit_auditor = auditor_class.new(self, reporter_class.new(self))
+            self.accessibility_audit_auditor = auditor_class.new(self, CapybaraAccessibilityAudit.reporter_for(self))
           end
 
           config.before(type: :system, &configure)
