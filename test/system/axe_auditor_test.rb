@@ -24,6 +24,31 @@ module CapybaraAccessibilityAudit
       assert_operator elapsed, :<, 15
     end
 
+    test "reports violations in full and other results with one node each" do
+      skip_accessibility_audits { visit violations_path(rules: %w[label image-alt]) }
+      reports = []
+      reporter = Struct.new(:reports) { def report(results) = reports << results }.new(reports)
+
+      assert_no_accessibility_violations auditor: AxeAuditor.new(self, reporter)
+      results = reports.sole
+
+      assert_equal %i[image-alt label], results.violations.map(&:id).sort
+      assert_not_empty results.passes
+      assert results.passes.all? { |rule| rule.nodes.size <= 1 }
+    end
+
+    test "overrides the options passed to axe.run" do
+      default_options = AxeAuditor.default_options
+      AxeAuditor.default_options = {resultTypes: ["violations"], iframes: false, rules: {label: {enabled: false}}}
+      skip_accessibility_audits { visit violations_path(rules: %w[label image-alt]) }
+
+      assert_rule_violation with: "image-alt", without: "label: Form elements must have labels" do
+        assert_no_accessibility_violations
+      end
+    ensure
+      AxeAuditor.default_options = default_options
+    end
+
     test "raises the error that axe reports" do
       skip_accessibility_audits { visit violations_path }
 

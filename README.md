@@ -292,6 +292,31 @@ CapybaraAccessibilityAudit::AxeAuditor.quiet_period_ms = 250
 CapybaraAccessibilityAudit::AxeAuditor.quiet_period_timeout_ms = 5000
 ```
 
+How is the auditor configured by default?
+---
+
+Every audit runs `axe` with the following [options][axe.run], along with the
+audit's own options:
+
+* `resultTypes: ["violations"]`: the report lists every node that violates a
+  rule, and one node for each rule that passes, is incomplete, or is
+  inapplicable.
+* `iframes: false`: the audit covers the page's top-level document, and leaves
+  out the contents of its frames.
+
+To change them, configure `config.capybara_accessibility_audit.auditor.default_options`.
+The value replaces the defaults. For example, to report every node for every
+rule:
+
+```ruby
+# config/environments/test.rb
+Rails.application.configure do
+  config.capybara_accessibility_audit.auditor.default_options = {}
+end
+```
+
+[axe.run]: https://www.deque.com/axe/core-documentation/api-documentation/#options-parameter
+
 ## Installation
 Add this line to your application's Gemfile:
 

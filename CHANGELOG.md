@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Run `axe` with `config.capybara_accessibility_audit.auditor.default_options`, which default to `resultTypes: ["violations"]` and `iframes: false`
+- Install `axe` while waiting for the DOM to stay unchanged, instead of afterward
+- Sleep until the quiet period can elapse, instead of polling the browser every 10 milliseconds
+
 ## 0.3.0 (October 02, 2026)
 
 - Wait for the DOM to stay unchanged before the audit runs, so that content

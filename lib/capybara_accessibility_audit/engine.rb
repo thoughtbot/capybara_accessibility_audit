@@ -1,7 +1,8 @@
 module CapybaraAccessibilityAudit
   class Engine < ::Rails::Engine
     config.capybara_accessibility_audit = ActiveSupport::OrderedOptions.new
-    config.capybara_accessibility_audit.auditor = AxeAuditor
+    config.capybara_accessibility_audit.auditor = ActiveSupport::OrderedOptions.new
+    config.capybara_accessibility_audit.auditor.default_options = AxeAuditor.default_options.deep_dup
     config.capybara_accessibility_audit.audit_after = %i[
       visit
       click_button
@@ -11,6 +12,14 @@ module CapybaraAccessibilityAudit
     ]
     config.capybara_accessibility_audit.audit_enabled = true
     config.capybara_accessibility_audit.reporter = :raise
+
+    initializer "capybara_accessibility_audit.auditor" do |app|
+      auditor = app.config.capybara_accessibility_audit.auditor
+
+      unless auditor.is_a?(Class)
+        AxeAuditor.default_options = auditor.default_options
+      end
+    end
 
     initializer "capybara_accessibility_audit.minitest" do |app|
       ActiveSupport.on_load :action_dispatch_system_test_case do
@@ -22,7 +31,7 @@ module CapybaraAccessibilityAudit
         accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
         setup do
-          auditor_class = app.config.capybara_accessibility_audit.auditor
+          auditor_class = CapybaraAccessibilityAudit.auditor_class(app.config.capybara_accessibility_audit.auditor)
           reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
           self.accessibility_audit_auditor = auditor_class.new(self, reporter_class.new(self))
@@ -43,7 +52,7 @@ module CapybaraAccessibilityAudit
 
             accessibility_audit_after app.config.capybara_accessibility_audit.audit_after
 
-            auditor_class = app.config.capybara_accessibility_audit.auditor
+            auditor_class = CapybaraAccessibilityAudit.auditor_class(app.config.capybara_accessibility_audit.auditor)
             reporter_class = CapybaraAccessibilityAudit.reporter_class(accessibility_audit_reporter)
 
             self.accessibility_audit_auditor = auditor_class.new(self, reporter_class.new(self))

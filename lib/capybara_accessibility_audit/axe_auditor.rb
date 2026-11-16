@@ -14,6 +14,22 @@ module CapybaraAccessibilityAudit
     class_attribute :quiet_period_ms, instance_accessor: false, default: 100
     class_attribute :quiet_period_timeout_ms, instance_accessor: false, default: 2000
 
+    # Options passed to every call to axe.run, beneath the audit's own options.
+    # Configure them with config.capybara_accessibility_audit.auditor.default_options.
+    #
+    # resultTypes: Reports only violations in full. axe still runs every rule,
+    # but it skips building selectors and HTML snippets for every passing,
+    # incomplete, and inapplicable node, which is most of the work on a large
+    # page. Passes, incomplete, and inapplicable results keep one node each.
+    #
+    # iframes: The auditor installs axe in the top-level document only, so axe
+    # cannot audit a frame's contents. Without this, axe waits on every frame
+    # for a response that never comes.
+    class_attribute :default_options, instance_accessor: false, default: {
+      resultTypes: ["violations"],
+      iframes: false
+    }.freeze
+
     def initialize(test, reporter)
       @test = test
       @reporter = reporter
@@ -41,14 +57,23 @@ module CapybaraAccessibilityAudit
 
       observe_mutations
 
+      # Installing axe does not change the DOM, so do it while the quiet period
+      # elapses. The audit checks again before it runs, in case a page load
+      # discarded this document.
+      install
+
       until monotonic_time >= deadline
         if (duration = unchanged_for).nil?
           observe_mutations
-        elsif monotonic_time >= earliest && duration >= quiet_period_ms
-          break
+          remaining = quiet_period_ms
+        else
+          remaining = [earliest - monotonic_time, quiet_period_ms - duration].max
+          break if remaining <= 0
         end
 
-        sleep 0.01
+        # Sleep until the earliest moment the DOM could have been quiet for
+        # long enough, rather than polling on a fixed interval.
+        sleep [remaining, deadline - monotonic_time].min.clamp(1..) / 1000.0
       end
     end
 
@@ -85,7 +110,9 @@ module CapybaraAccessibilityAudit
     def run(config)
       context, options = split(config)
 
-      json = page.evaluate_async_script <<~JS, context.as_json, options.as_json, ERROR_KEY
+      options = self.class.default_options.as_json.deep_merge(options.as_json)
+
+      json = page.evaluate_async_script <<~JS, context.as_json, options, ERROR_KEY
         const [ context, options, errorKey, callback ] = arguments
 
         axe.run(context, options)
